@@ -1,0 +1,64 @@
+@property --parallax-from {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 30px;
+}
+@property --parallax-to {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: -30px;
+}
+@property --parallax-opacity-from {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 1;
+}
+@property --parallax-opacity-to {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 1;
+}
+
+@keyframes uvarov-parallax-y {
+  from {
+    translate: 0 var(--parallax-from);
+    opacity: var(--parallax-opacity-from);
+  }
+  to {
+    translate: 0 var(--parallax-to);
+    opacity: var(--parallax-opacity-to);
+  }
+}
+
+@keyframes uvarov-parallax-x {
+  from {
+    translate: var(--parallax-from) 0;
+    opacity: var(--parallax-opacity-from);
+  }
+  to {
+    translate: var(--parallax-to) 0;
+    opacity: var(--parallax-opacity-to);
+  }
+}
+
+.uvarov-parallax {
+  animation-name: uvarov-parallax-y;
+  animation-timing-function: linear;
+  animation-timeline: view();
+}
+
+.uvarov-parallax[data-axis="x"] {
+  animation-name: uvarov-parallax-x;
+}
+
+@supports (animation-timeline: view()) {
+  .uvarov-parallax { animation-duration: 1ms; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .uvarov-parallax {
+    animation: none !important;
+    translate: none !important;
+    opacity: 1 !important;
+  }
+}
