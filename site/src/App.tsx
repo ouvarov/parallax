@@ -597,12 +597,6 @@ function Caveats() {
             copy the CSS from the source and apply it to your own element.
           </li>
           <li>
-            <strong>Global <code>@property</code> registration.</strong> The
-            custom properties (<code>--parallax-from</code>, <code>--parallax-to</code>,
-            opacity equivalents) are declared globally. First library to load
-            wins if there's a name collision.
-          </li>
-          <li>
             <strong>Next.js Pages Router.</strong> Global CSS imports must come
             from <code>_app.tsx</code>. App Router has no restriction.
           </li>

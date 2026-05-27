@@ -33,20 +33,20 @@ export function Parallax({
   const endPx = to !== undefined ? to : -amplitude;
 
   const mergedClassName = className
-    ? `uvarov-parallax ${className}`
-    : "uvarov-parallax";
+    ? `ouvarov-parallax ${className}`
+    : "ouvarov-parallax";
 
   const mergedStyle: CSSProperties = {
     ...style,
-    ["--parallax-from" as string]: `${startPx}px`,
-    ["--parallax-to" as string]: `${endPx}px`,
+    ["--ouvarov-parallax-from" as string]: `${startPx}px`,
+    ["--ouvarov-parallax-to" as string]: `${endPx}px`,
   };
 
   if (opacityFrom !== undefined) {
-    (mergedStyle as Record<string, unknown>)["--parallax-opacity-from"] = opacityFrom;
+    (mergedStyle as Record<string, unknown>)["--ouvarov-parallax-opacity-from"] = opacityFrom;
   }
   if (opacityTo !== undefined) {
-    (mergedStyle as Record<string, unknown>)["--parallax-opacity-to"] = opacityTo;
+    (mergedStyle as Record<string, unknown>)["--ouvarov-parallax-opacity-to"] = opacityTo;
   }
 
   if (range) mergedStyle.animationRange = range;

@@ -1,62 +1,62 @@
-@property --parallax-from {
+@property --ouvarov-parallax-from {
   syntax: "<length>";
   inherits: true;
   initial-value: 30px;
 }
-@property --parallax-to {
+@property --ouvarov-parallax-to {
   syntax: "<length>";
   inherits: true;
   initial-value: -30px;
 }
-@property --parallax-opacity-from {
+@property --ouvarov-parallax-opacity-from {
   syntax: "<number>";
   inherits: true;
   initial-value: 1;
 }
-@property --parallax-opacity-to {
+@property --ouvarov-parallax-opacity-to {
   syntax: "<number>";
   inherits: true;
   initial-value: 1;
 }
 
-@keyframes uvarov-parallax-y {
+@keyframes ouvarov-parallax-y {
   from {
-    translate: 0 var(--parallax-from);
-    opacity: var(--parallax-opacity-from);
+    translate: 0 var(--ouvarov-parallax-from);
+    opacity: var(--ouvarov-parallax-opacity-from);
   }
   to {
-    translate: 0 var(--parallax-to);
-    opacity: var(--parallax-opacity-to);
+    translate: 0 var(--ouvarov-parallax-to);
+    opacity: var(--ouvarov-parallax-opacity-to);
   }
 }
 
-@keyframes uvarov-parallax-x {
+@keyframes ouvarov-parallax-x {
   from {
-    translate: var(--parallax-from) 0;
-    opacity: var(--parallax-opacity-from);
+    translate: var(--ouvarov-parallax-from) 0;
+    opacity: var(--ouvarov-parallax-opacity-from);
   }
   to {
-    translate: var(--parallax-to) 0;
-    opacity: var(--parallax-opacity-to);
+    translate: var(--ouvarov-parallax-to) 0;
+    opacity: var(--ouvarov-parallax-opacity-to);
   }
 }
 
-.uvarov-parallax {
-  animation-name: uvarov-parallax-y;
+.ouvarov-parallax {
+  animation-name: ouvarov-parallax-y;
   animation-timing-function: linear;
   animation-timeline: view();
 }
 
-.uvarov-parallax[data-axis="x"] {
-  animation-name: uvarov-parallax-x;
+.ouvarov-parallax[data-axis="x"] {
+  animation-name: ouvarov-parallax-x;
 }
 
 @supports (animation-timeline: view()) {
-  .uvarov-parallax { animation-duration: 1ms; }
+  .ouvarov-parallax { animation-duration: 1ms; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .uvarov-parallax {
+  .ouvarov-parallax {
     animation: none !important;
     translate: none !important;
     opacity: 1 !important;

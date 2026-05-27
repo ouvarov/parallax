@@ -108,7 +108,6 @@ Reduced motion is respected automatically via `@media (prefers-reduced-motion: r
 
 - **Single-purpose.** Drift and opacity on scroll, nothing else. No spring physics, no gesture handling, no layout animations.
 - The `<Parallax>` wrapper adds one DOM node. If that matters, copy the CSS from the source and apply it to your own element.
-- Custom properties (`--parallax-from`, `--parallax-to`, opacity equivalents) are declared globally via `@property`. First library to load wins if multiple register the same name.
 - **Next.js Pages Router** disallows global CSS imports from non-`_app.tsx` files, so the auto-import will throw at build. Workaround: import `@ouvarov/scroll-parallax/style.css` from `_app.tsx` instead and don't import `Parallax` outside it. App Router has no restriction.
 
 ## License
