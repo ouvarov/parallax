@@ -67,54 +67,66 @@ function Card1FromTo() {
         <h2><span className="num">1</span> Custom start and end</h2>
         <p className="lede">
           Set precise <code>from</code> and <code>to</code> translate values
-          in px. The card drifts from one to the other across its viewport
-          pass. Values can be asymmetric — drift only upward, or only down,
-          or biased to either side.
+          in px. Asymmetric is fine — drift only upward, only down, or biased
+          to either side.
         </p>
 
-        <div className="demo-grid">
-          <aside className="controls sticky">
-            <h3>Props</h3>
-
+        <div className="controls-bar">
+          <div className="controls-grid">
             <div className="control-row">
               <label>
                 <span>from</span>
                 <span className="value">{from}px</span>
               </label>
               <input
-                type="range"
-                min={-100}
-                max={100}
-                value={from}
+                type="range" min={-100} max={100} value={from}
                 onChange={(e) => setFrom(Number(e.target.value))}
               />
             </div>
-
             <div className="control-row">
               <label>
                 <span>to</span>
                 <span className="value">{to}px</span>
               </label>
               <input
-                type="range"
-                min={-100}
-                max={100}
-                value={to}
+                type="range" min={-100} max={100} value={to}
                 onChange={(e) => setTo(Number(e.target.value))}
               />
             </div>
-
-            <div className="snippet">
-              <div className="snippet-label">Current code</div>
-              <pre><code>{snippet}</code></pre>
-            </div>
-          </aside>
-
-          <div className="demo-stage">
-            <Parallax from={from} to={to}>
-              <div className="demo-card" style={{ background: "var(--card-a)" }}>1</div>
-            </Parallax>
           </div>
+          <pre className="controls-snippet"><code>{snippet}</code></pre>
+        </div>
+      </div>
+
+      <div className="container scroll-row">
+        <div className="scroll-text">
+          <p>
+            Scroll past this section. The card on the right starts at{" "}
+            <code>{from}px</code> on the Y-axis and ends at{" "}
+            <code>{to}px</code> by the time it exits the viewport.
+          </p>
+          <p>
+            The text you're reading scrolls at normal page speed — no
+            animation here. The card moves at <em>scroll speed plus</em> the
+            parallax offset. That gap between the two is what you see as the
+            parallax effect.
+          </p>
+          <p>
+            Stop scrolling — the animation freezes. Scroll back up — it
+            reverses. No JavaScript runs during the scroll: the browser is
+            interpolating the <code>translate</code> property against the
+            element's progress through the viewport.
+          </p>
+          <p>
+            Adjust the sliders above to change the start and end points and
+            see how the relative motion changes. Negative values invert the
+            drift direction.
+          </p>
+        </div>
+        <div className="scroll-card-col">
+          <Parallax from={from} to={to}>
+            <div className="demo-card" style={{ background: "var(--card-a)" }}>1</div>
+          </Parallax>
         </div>
       </div>
     </section>
@@ -135,7 +147,6 @@ function Card2Speed() {
   const [range, setRange] = useState<string>(RANGE_PRESETS[0].value);
 
   const isDefaultRange = range === RANGE_PRESETS[0].value;
-
   const snippet = `<Parallax
   amplitude={${amplitude}}${isDefaultRange ? "" : `\n  range="${range}"`}
 >
@@ -147,56 +158,63 @@ function Card2Speed() {
       <div className="container">
         <h2><span className="num">2</span> Speed = displacement + range</h2>
         <p className="lede">
-          Two ways to make motion feel faster. Bigger <code>amplitude</code> covers
-          more distance across the same viewport pass. Shorter{" "}
-          <code>range</code> plays the same distance in fewer scroll pixels —
-          actually faster, not just bigger.
+          Two knobs for "speed". Bigger <code>amplitude</code> covers more
+          distance across the same viewport pass. Shorter <code>range</code>{" "}
+          plays the same distance in fewer scroll pixels — actually faster,
+          not just bigger.
         </p>
 
-        <div className="demo-grid">
-          <aside className="controls sticky">
-            <h3>Props</h3>
-
+        <div className="controls-bar">
+          <div className="controls-grid">
             <div className="control-row">
               <label>
                 <span>amplitude</span>
                 <span className="value">{amplitude}px</span>
               </label>
               <input
-                type="range"
-                min={0}
-                max={200}
-                value={amplitude}
+                type="range" min={0} max={200} value={amplitude}
                 onChange={(e) => setAmplitude(Number(e.target.value))}
               />
             </div>
-
             <div className="control-row">
-              <label>
-                <span>range</span>
-              </label>
-              <select
-                className="select"
-                value={range}
-                onChange={(e) => setRange(e.target.value)}
-              >
+              <label><span>range</span></label>
+              <select className="select" value={range} onChange={(e) => setRange(e.target.value)}>
                 {RANGE_PRESETS.map((p) => (
                   <option key={p.value} value={p.value}>{p.label}</option>
                 ))}
               </select>
             </div>
-
-            <div className="snippet">
-              <div className="snippet-label">Current code</div>
-              <pre><code>{snippet}</code></pre>
-            </div>
-          </aside>
-
-          <div className="demo-stage">
-            <Parallax amplitude={amplitude} range={range}>
-              <div className="demo-card" style={{ background: "var(--card-b)" }}>2</div>
-            </Parallax>
           </div>
+          <pre className="controls-snippet"><code>{snippet}</code></pre>
+        </div>
+      </div>
+
+      <div className="container scroll-row">
+        <div className="scroll-text">
+          <p>
+            Same direction as Card 1, but here you control the magnitude with
+            a single <code>amplitude</code> prop —{" "}
+            <code>from = +amplitude</code>, <code>to = -amplitude</code>.
+            Symmetric drift, easier to reason about for hero images and
+            decorations.
+          </p>
+          <p>
+            <code>range</code> changes <em>where</em> in the scroll progress
+            the animation plays. The default <code>cover</code> spreads the
+            animation across the full viewport pass. Switch to{" "}
+            <code>entry</code> and the same amplitude is compressed into the
+            element's enter-phase only — visually faster.
+          </p>
+          <p>
+            This is what the original parallax demos called "speed".
+            Mathematically: same delta, smaller scroll window, so the
+            apparent velocity per scrolled pixel is higher.
+          </p>
+        </div>
+        <div className="scroll-card-col">
+          <Parallax amplitude={amplitude} range={range}>
+            <div className="demo-card" style={{ background: "var(--card-b)" }}>2</div>
+          </Parallax>
         </div>
       </div>
     </section>
@@ -222,57 +240,61 @@ function Card3Opacity() {
       <div className="container">
         <h2><span className="num">3</span> Opacity ramp</h2>
         <p className="lede">
-          <code>animation-timeline</code> isn't limited to transforms. Pass{" "}
-          <code>opacityFrom</code> and <code>opacityTo</code> to ramp opacity
-          across the scroll-through. Useful for elements that should fade in,
-          fade out, or partially fade between custom values like 0.2 → 0.7.
+          <code>animation-timeline</code> isn't limited to transforms.{" "}
+          <code>opacityFrom</code> and <code>opacityTo</code> ramp opacity
+          across the scroll-through. Pick any two values between 0 and 1.
         </p>
 
-        <div className="demo-grid">
-          <aside className="controls sticky">
-            <h3>Props</h3>
-
+        <div className="controls-bar">
+          <div className="controls-grid">
             <div className="control-row">
               <label>
                 <span>opacityFrom</span>
                 <span className="value">{opacityFrom.toFixed(2)}</span>
               </label>
               <input
-                type="range"
-                min={0}
-                max={1}
-                step={0.05}
-                value={opacityFrom}
+                type="range" min={0} max={1} step={0.05} value={opacityFrom}
                 onChange={(e) => setOpacityFrom(Number(e.target.value))}
               />
             </div>
-
             <div className="control-row">
               <label>
                 <span>opacityTo</span>
                 <span className="value">{opacityTo.toFixed(2)}</span>
               </label>
               <input
-                type="range"
-                min={0}
-                max={1}
-                step={0.05}
-                value={opacityTo}
+                type="range" min={0} max={1} step={0.05} value={opacityTo}
                 onChange={(e) => setOpacityTo(Number(e.target.value))}
               />
             </div>
-
-            <div className="snippet">
-              <div className="snippet-label">Current code</div>
-              <pre><code>{snippet}</code></pre>
-            </div>
-          </aside>
-
-          <div className="demo-stage">
-            <Parallax amplitude={0} opacityFrom={opacityFrom} opacityTo={opacityTo}>
-              <div className="demo-card" style={{ background: "var(--card-c)" }}>3</div>
-            </Parallax>
           </div>
+          <pre className="controls-snippet"><code>{snippet}</code></pre>
+        </div>
+      </div>
+
+      <div className="container scroll-row">
+        <div className="scroll-text">
+          <p>
+            This card has <code>amplitude={"{0}"}</code> — no translate. The
+            only thing animating is opacity, ramping from{" "}
+            <code>{opacityFrom.toFixed(2)}</code> at the bottom of the
+            viewport pass to <code>{opacityTo.toFixed(2)}</code> at the top.
+          </p>
+          <p>
+            Useful for fading elements in as they enter view, fading them
+            out as they leave, or any partial fade between two custom values
+            (0.2 → 0.7 for muted reveal effects, for example).
+          </p>
+          <p>
+            Combine with <code>range</code> if you want the fade to happen
+            only during the entry phase, or only on exit, instead of across
+            the full pass.
+          </p>
+        </div>
+        <div className="scroll-card-col">
+          <Parallax amplitude={0} opacityFrom={opacityFrom} opacityTo={opacityTo}>
+            <div className="demo-card" style={{ background: "var(--card-c)" }}>3</div>
+          </Parallax>
         </div>
       </div>
     </section>
@@ -304,7 +326,6 @@ function Card4Combined() {
     range !== RANGE_PRESETS[0].value ? `  range="${range}"` : null,
     easing !== EASING_PRESETS[0].value ? `  easing="${easing}"` : null,
   ].filter(Boolean);
-
   const snippet = `<Parallax\n${lines.join("\n")}\n>\n  <Card />\n</Parallax>`;
 
   return (
@@ -312,15 +333,12 @@ function Card4Combined() {
       <div className="container">
         <h2><span className="num">4</span> Compose it all</h2>
         <p className="lede">
-          Translate, opacity, axis, range and easing — every prop on the same
-          instance. Each <code>&lt;Parallax&gt;</code> on a page is independent,
-          values don't bleed across siblings.
+          Every prop on the same instance. Each <code>&lt;Parallax&gt;</code>{" "}
+          on a page is independent — values don't bleed across siblings.
         </p>
 
-        <div className="demo-grid">
-          <aside className="controls sticky">
-            <h3>Props</h3>
-
+        <div className="controls-bar">
+          <div className="controls-grid controls-grid-wide">
             <div className="control-row">
               <label>
                 <span>amplitude</span>
@@ -331,7 +349,6 @@ function Card4Combined() {
                 onChange={(e) => setAmplitude(Number(e.target.value))}
               />
             </div>
-
             <div className="control-row">
               <label>
                 <span>axis</span>
@@ -342,7 +359,6 @@ function Card4Combined() {
                 <button type="button" className={axis === "x" ? "active" : ""} onClick={() => setAxis("x")}>x</button>
               </div>
             </div>
-
             <div className="control-row">
               <label>
                 <span>opacityFrom</span>
@@ -353,7 +369,6 @@ function Card4Combined() {
                 onChange={(e) => setOpacityFrom(Number(e.target.value))}
               />
             </div>
-
             <div className="control-row">
               <label>
                 <span>opacityTo</span>
@@ -364,7 +379,6 @@ function Card4Combined() {
                 onChange={(e) => setOpacityTo(Number(e.target.value))}
               />
             </div>
-
             <div className="control-row">
               <label><span>range</span></label>
               <select className="select" value={range} onChange={(e) => setRange(e.target.value)}>
@@ -373,7 +387,6 @@ function Card4Combined() {
                 ))}
               </select>
             </div>
-
             <div className="control-row">
               <label><span>easing</span></label>
               <select className="select" value={easing} onChange={(e) => setEasing(e.target.value)}>
@@ -382,25 +395,42 @@ function Card4Combined() {
                 ))}
               </select>
             </div>
-
-            <div className="snippet">
-              <div className="snippet-label">Current code</div>
-              <pre><code>{snippet}</code></pre>
-            </div>
-          </aside>
-
-          <div className="demo-stage">
-            <Parallax
-              amplitude={amplitude}
-              axis={axis}
-              opacityFrom={opacityFrom}
-              opacityTo={opacityTo}
-              range={range}
-              easing={easing}
-            >
-              <div className="demo-card" style={{ background: "var(--card-d)" }}>4</div>
-            </Parallax>
           </div>
+          <pre className="controls-snippet"><code>{snippet}</code></pre>
+        </div>
+      </div>
+
+      <div className="container scroll-row">
+        <div className="scroll-text">
+          <p>
+            All six knobs on one card. Translate magnitude, axis direction,
+            opacity ramp, where in the scroll the animation plays, and the
+            easing curve between start and end.
+          </p>
+          <p>
+            Each <code>&lt;Parallax&gt;</code> sets its own CSS custom
+            properties as inline styles on its wrapper. There's no shared
+            state — put twenty of these on a page with different
+            configurations and they animate independently.
+          </p>
+          <p>
+            Try a non-linear easing like <code>cubic-bezier(0.7, 0, 0.3, 1)</code>{" "}
+            — the card snaps through its range instead of drifting linearly.
+            Combine with <code>range="entry"</code> for a punchy on-enter
+            reveal.
+          </p>
+        </div>
+        <div className="scroll-card-col">
+          <Parallax
+            amplitude={amplitude}
+            axis={axis}
+            opacityFrom={opacityFrom}
+            opacityTo={opacityTo}
+            range={range}
+            easing={easing}
+          >
+            <div className="demo-card" style={{ background: "var(--card-d)" }}>4</div>
+          </Parallax>
         </div>
       </div>
     </section>

@@ -325,22 +325,74 @@ pre code {
   color: var(--accent);
 }
 
-.demo-stage {
+/* Inline controls panel above the scroll-row */
+.controls-bar {
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin: 2rem 0 3rem;
   display: grid;
-  place-items: center;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+@media (max-width: 720px) {
+  .controls-bar { grid-template-columns: 1fr; }
+}
+
+.controls-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem 1.5rem;
+}
+
+.controls-grid-wide {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+@media (max-width: 720px) {
+  .controls-grid,
+  .controls-grid-wide { grid-template-columns: 1fr; }
+}
+
+.controls-snippet {
+  margin: 0;
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+/* Scroll-row: descriptive text on left, parallaxing card on right */
+.scroll-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
   min-height: 100vh;
-  padding: 3rem 0;
+  align-items: stretch;
 }
 
-.demo-stage .uvarov-parallax {
+@media (max-width: 720px) {
+  .scroll-row { grid-template-columns: 1fr; gap: 2rem; }
+}
+
+.scroll-text {
+  padding: 6rem 0;
+}
+.scroll-text p {
+  color: var(--muted);
+  font-size: 1rem;
+  margin: 0 0 1.25rem;
+  line-height: 1.7;
+}
+.scroll-text code {
+  color: var(--fg);
+}
+
+.scroll-card-col {
   display: grid;
   place-items: center;
-}
-
-.controls.sticky {
-  position: sticky;
-  top: 1.5rem;
-  align-self: start;
+  padding: 6rem 0;
 }
 
 .demo-card {
