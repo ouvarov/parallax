@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Parallax, type ParallaxAxis } from "@ouvarov/parallax";
+import { Parallax, type ParallaxAxis } from "@ouvarov/scroll-parallax";
 
 export function App() {
   return (
@@ -21,7 +21,7 @@ function Hero() {
   return (
     <header className="hero">
       <div className="container">
-        <span className="hero-tag">@ouvarov/parallax · MIT</span>
+        <span className="hero-tag">@ouvarov/scroll-parallax · MIT</span>
         <h1>
           Scroll parallax for React.{" "}
           <span className="accent">~350 bytes</span> of JS, zero runtime.
@@ -39,12 +39,12 @@ function Hero() {
           <span className="badge">Dependencies: <strong>0</strong></span>
         </div>
 
-        <div className="install">npm i @ouvarov/parallax</div>
+        <div className="install">npm i @ouvarov/scroll-parallax</div>
 
         <div className="cta">
           <a href="#card-1">See the demos ↓</a>
-          <a href="https://github.com/ouvarov/parallax" target="_blank" rel="noreferrer">GitHub</a>
-          <a href="https://www.npmjs.com/package/@ouvarov/parallax" target="_blank" rel="noreferrer">npm</a>
+          <a href="https://github.com/ouvarov/scroll-parallax" target="_blank" rel="noreferrer">GitHub</a>
+          <a href="https://www.npmjs.com/package/@ouvarov/scroll-parallax" target="_blank" rel="noreferrer">npm</a>
         </div>
       </div>
     </header>
@@ -587,8 +587,8 @@ function FooterSection() {
     <footer className="footer">
       <div className="container">
         <div className="footer-links">
-          <a href="https://github.com/ouvarov/parallax" target="_blank" rel="noreferrer">GitHub</a>
-          <a href="https://www.npmjs.com/package/@ouvarov/parallax" target="_blank" rel="noreferrer">npm</a>
+          <a href="https://github.com/ouvarov/scroll-parallax" target="_blank" rel="noreferrer">GitHub</a>
+          <a href="https://www.npmjs.com/package/@ouvarov/scroll-parallax" target="_blank" rel="noreferrer">npm</a>
         </div>
         <p>MIT © Olexandr Uvarov</p>
       </div>

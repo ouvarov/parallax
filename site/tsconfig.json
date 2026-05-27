@@ -17,7 +17,7 @@
     "noFallthroughCasesInSwitch": true,
     "baseUrl": ".",
     "paths": {
-      "@ouvarov/parallax": ["../src/index.ts"]
+      "@ouvarov/scroll-parallax": ["../src/index.ts"]
     }
   },
   "include": ["src"]

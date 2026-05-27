@@ -1,6 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import "@ouvarov/parallax/style.css";
+import "@ouvarov/scroll-parallax/style.css";
 import "./styles.css";
 import { App } from "./App";
 

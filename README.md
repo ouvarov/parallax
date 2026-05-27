@@ -1,14 +1,14 @@
-# @ouvarov/parallax
+# @ouvarov/scroll-parallax
 
-[![npm version](https://img.shields.io/npm/v/@ouvarov/parallax.svg?color=cb3837&logo=npm)](https://www.npmjs.com/package/@ouvarov/parallax)
-[![bundle size](https://img.shields.io/bundlephobia/minzip/@ouvarov/parallax?label=gzipped&color=blue)](https://bundlephobia.com/package/@ouvarov/parallax)
-[![types](https://img.shields.io/npm/types/@ouvarov/parallax)](https://www.npmjs.com/package/@ouvarov/parallax)
-[![license](https://img.shields.io/npm/l/@ouvarov/parallax)](LICENSE)
-[![downloads](https://img.shields.io/npm/dm/@ouvarov/parallax)](https://www.npmjs.com/package/@ouvarov/parallax)
+[![npm version](https://img.shields.io/npm/v/@ouvarov/scroll-parallax.svg?color=cb3837&logo=npm)](https://www.npmjs.com/package/@ouvarov/scroll-parallax)
+[![bundle size](https://img.shields.io/bundlephobia/minzip/@ouvarov/scroll-parallax?label=gzipped&color=blue)](https://bundlephobia.com/package/@ouvarov/scroll-parallax)
+[![types](https://img.shields.io/npm/types/@ouvarov/scroll-parallax)](https://www.npmjs.com/package/@ouvarov/scroll-parallax)
+[![license](https://img.shields.io/npm/l/@ouvarov/scroll-parallax)](LICENSE)
+[![downloads](https://img.shields.io/npm/dm/@ouvarov/scroll-parallax)](https://www.npmjs.com/package/@ouvarov/scroll-parallax)
 
 One React component for scroll-driven animation. Translate, opacity, custom ranges and easings — all under ~350 bytes of JS, zero runtime. The animation itself is pure CSS `animation-timeline: view()`.
 
-📺 **Live demo & docs:** https://ouvarov.github.io/parallax/
+📺 **Live demo & docs:** https://ouvarov.github.io/scroll-parallax/
 
 ```
 JS:   556 B raw   /   349 B gzipped
@@ -18,14 +18,14 @@ CSS:  1.2 KB raw  /   372 B gzipped
 ## Install
 
 ```sh
-npm i @ouvarov/parallax
+npm i @ouvarov/scroll-parallax
 ```
 
 ## Use
 
 ```tsx
-import { Parallax } from "@ouvarov/parallax";
-import "@ouvarov/parallax/style.css";
+import { Parallax } from "@ouvarov/scroll-parallax";
+import "@ouvarov/scroll-parallax/style.css";
 
 export function Hero() {
   return (

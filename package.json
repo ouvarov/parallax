@@ -1,5 +1,5 @@
 {
-  "name": "@ouvarov/parallax",
+  "name": "@ouvarov/scroll-parallax",
   "version": "0.1.0",
   "description": "Scroll parallax for React in under 1 KB. Zero JS at runtime. Pure CSS animation-timeline: view().",
   "keywords": [
@@ -16,11 +16,11 @@
   "author": "Olexandr Uvarov",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ouvarov/parallax.git"
+    "url": "git+https://github.com/ouvarov/scroll-parallax.git"
   },
-  "homepage": "https://ouvarov.github.io/parallax/",
+  "homepage": "https://ouvarov.github.io/scroll-parallax/",
   "bugs": {
-    "url": "https://github.com/ouvarov/parallax/issues"
+    "url": "https://github.com/ouvarov/scroll-parallax/issues"
   },
   "type": "module",
   "main": "./dist/index.cjs",

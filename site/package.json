@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@ouvarov/parallax": "^0.1.0",
+    "@ouvarov/scroll-parallax": "link:..",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
