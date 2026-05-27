@@ -1,6 +1,6 @@
 {
   "name": "@ouvarov/scroll-parallax",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Scroll parallax for React in under 1 KB. Zero JS at runtime. Pure CSS animation-timeline: view().",
   "keywords": [
     "react",
@@ -35,7 +35,9 @@
     "./style.css": "./style.css"
   },
   "sideEffects": [
-    "*.css"
+    "*.css",
+    "./dist/index.js",
+    "./dist/index.cjs"
   ],
   "files": [
     "dist",

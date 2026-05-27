@@ -9,5 +9,5 @@ export default defineConfig({
   treeshake: true,
   sourcemap: false,
   target: "es2020",
-  external: ["react", "react/jsx-runtime"],
+  external: ["react", "react/jsx-runtime", /\.css$/],
 });
