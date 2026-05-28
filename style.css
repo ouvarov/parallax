@@ -45,6 +45,7 @@
   animation-name: ouvarov-parallax-y;
   animation-timing-function: linear;
   animation-timeline: view();
+  animation-fill-mode: both;
 }
 
 .ouvarov-parallax[data-axis="x"] {
