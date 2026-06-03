@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.3.0] — 2026-06-03
+
+- Three-stop animation. New `mid` prop for translate and `opacityMid` for opacity — drift in then back out, fade in at the apex then fade out. When not set, `mid` defaults to the midpoint of `from` and `to`, so existing two-stop animations are visually identical.
+- Scale support. `scaleFrom` / `scaleTo` animate the `scale` property as a unitless multiplier.
+- Rotate support. `rotateFrom` / `rotateTo` animate the `rotate` property in degrees.
+- All four scroll-animatable CSS properties (translate, opacity, scale, rotate) now in one component, under 1 KB gzipped total runtime.
+
+[0.3.0]: https://github.com/ouvarov/scroll-parallax/releases/tag/v0.3.0
+
 ## [0.2.1] — 2026-05-28
 
 - Fix snap-back with `range="entry …"`, `range="exit …"` and `range="contain …"`. Outside the animated range the element used to revert to its un-animated position because `animation-fill-mode` defaulted to `none` — a visible jump on entry-end / exit-start / both contain edges. Setting `animation-fill-mode: both` makes the element hold the `from`-value before the range and the `to`-value after it, so any non-`cover` range stays continuous.

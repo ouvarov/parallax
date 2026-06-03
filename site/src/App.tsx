@@ -8,7 +8,9 @@ export function App() {
       <Card1FromTo />
       <Card2Speed />
       <Card3Opacity />
-      <Card4Combined />
+      <Card4ScaleRotate />
+      <Card5Pulse />
+      <Card6Combined />
       <ApiSection />
       <BrowserSupport />
       <Caveats />
@@ -24,18 +26,19 @@ function Hero() {
         <span className="hero-tag">@ouvarov/scroll-parallax · MIT</span>
         <h1>
           Scroll parallax for React.{" "}
-          <span className="accent">~350 bytes</span> of JS, zero runtime.
+          <span className="accent">Under 1 KB</span>, zero runtime.
         </h1>
         <p className="hero-sub">
-          One component for scroll-driven animation in React. The animation
-          itself is pure CSS <code>animation-timeline: view()</code> — a typed
-          wrapper over the native browser API. Translate, opacity, custom
-          ranges and easings — all from the same component.
+          One component for scroll-driven animation in React. Translate,
+          opacity, scale, rotate — all four scroll-animatable CSS properties
+          in one component. The animation itself is pure CSS{" "}
+          <code>animation-timeline: view()</code> — a typed wrapper over the
+          native browser API.
         </p>
 
         <div className="size-row">
-          <span className="badge">JS: <strong>556 B</strong> raw / <strong>349 B</strong> gzipped</span>
-          <span className="badge">CSS: <strong>1.2 KB</strong> raw / <strong>372 B</strong> gzipped</span>
+          <span className="badge">JS: <strong>1.0 KB</strong> raw / <strong>511 B</strong> gzipped</span>
+          <span className="badge">CSS: <strong>2.6 KB</strong> raw / <strong>482 B</strong> gzipped</span>
           <span className="badge">Dependencies: <strong>0</strong></span>
         </div>
 
@@ -301,7 +304,256 @@ function Card3Opacity() {
   );
 }
 
-/* ─────────────── Card 4: everything combined ─────────────── */
+/* ─────────────── Card 4: scale + rotate ─────────────── */
+
+function Card4ScaleRotate() {
+  const [scaleFrom, setScaleFrom] = useState(0.8);
+  const [scaleTo, setScaleTo] = useState(1);
+  const [rotateFrom, setRotateFrom] = useState(-6);
+  const [rotateTo, setRotateTo] = useState(0);
+
+  const snippet = `<Parallax
+  amplitude={0}
+  scaleFrom={${scaleFrom}}
+  scaleTo={${scaleTo}}
+  rotateFrom={${rotateFrom}}
+  rotateTo={${rotateTo}}
+>
+  <Card />
+</Parallax>`;
+
+  return (
+    <section className="demo-section">
+      <div className="container">
+        <h2><span className="num">4</span> Scale and rotate</h2>
+        <p className="lede">
+          The other two scroll-animatable CSS properties.{" "}
+          <code>scaleFrom</code> / <code>scaleTo</code> as a unitless
+          multiplier, <code>rotateFrom</code> / <code>rotateTo</code> in
+          degrees. Combine for a tilt-and-grow effect on enter.
+        </p>
+
+        <div className="controls-bar">
+          <div className="controls-grid">
+            <div className="control-row">
+              <label>
+                <span>scaleFrom</span>
+                <span className="value">{scaleFrom.toFixed(2)}</span>
+              </label>
+              <input
+                type="range" min={0.5} max={1.5} step={0.05} value={scaleFrom}
+                onChange={(e) => setScaleFrom(Number(e.target.value))}
+              />
+            </div>
+            <div className="control-row">
+              <label>
+                <span>scaleTo</span>
+                <span className="value">{scaleTo.toFixed(2)}</span>
+              </label>
+              <input
+                type="range" min={0.5} max={1.5} step={0.05} value={scaleTo}
+                onChange={(e) => setScaleTo(Number(e.target.value))}
+              />
+            </div>
+            <div className="control-row">
+              <label>
+                <span>rotateFrom</span>
+                <span className="value">{rotateFrom}°</span>
+              </label>
+              <input
+                type="range" min={-45} max={45} value={rotateFrom}
+                onChange={(e) => setRotateFrom(Number(e.target.value))}
+              />
+            </div>
+            <div className="control-row">
+              <label>
+                <span>rotateTo</span>
+                <span className="value">{rotateTo}°</span>
+              </label>
+              <input
+                type="range" min={-45} max={45} value={rotateTo}
+                onChange={(e) => setRotateTo(Number(e.target.value))}
+              />
+            </div>
+          </div>
+          <pre className="controls-snippet"><code>{snippet}</code></pre>
+        </div>
+      </div>
+
+      <div className="container scroll-row">
+        <div className="scroll-text">
+          <p>
+            Translate isn't the only scroll-animatable CSS property. The card
+            on the right has <code>amplitude={"{0}"}</code> — no drift at all.
+            What you see is pure <code>scale</code> and <code>rotate</code>{" "}
+            interpolating against scroll progress.
+          </p>
+          <p>
+            Both are native CSS properties (not <code>transform</code>{" "}
+            substrings). That means they compose cleanly with each other and
+            with translate — no <code>transform: scale() rotate() translate()</code>{" "}
+            order-of-operations gymnastics.
+          </p>
+          <p>
+            Useful for on-enter reveals where a card needs to settle into
+            place: start slightly small and tilted, end at natural size and
+            angle.
+          </p>
+        </div>
+        <div className="scroll-card-col">
+          <Parallax
+            amplitude={0}
+            scaleFrom={scaleFrom}
+            scaleTo={scaleTo}
+            rotateFrom={rotateFrom}
+            rotateTo={rotateTo}
+          >
+            <div className="demo-card" style={{ background: "var(--card-a)" }}>4</div>
+          </Parallax>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─────────────── Card 5: three-stop pulse ─────────────── */
+
+function Card5Pulse() {
+  const [from, setFrom] = useState(40);
+  const [mid, setMid] = useState(0);
+  const [to, setTo] = useState(40);
+  const [opacityFrom, setOpacityFrom] = useState(0);
+  const [opacityMid, setOpacityMid] = useState(1);
+  const [opacityTo, setOpacityTo] = useState(0);
+
+  const snippet = `<Parallax
+  from={${from}}
+  mid={${mid}}
+  to={${to}}
+  opacityFrom={${opacityFrom}}
+  opacityMid={${opacityMid}}
+  opacityTo={${opacityTo}}
+>
+  <Card />
+</Parallax>`;
+
+  return (
+    <section className="demo-section">
+      <div className="container">
+        <h2><span className="num">5</span> Pulse — three-stop animation</h2>
+        <p className="lede">
+          Pass <code>mid</code> for translate and <code>opacityMid</code> for
+          opacity to set a 50% keyframe. Rise into view, settle at the apex,
+          then fade out — the classic "card C" pulse.
+        </p>
+
+        <div className="controls-bar">
+          <div className="controls-grid controls-grid-wide">
+            <div className="control-row">
+              <label>
+                <span>from</span>
+                <span className="value">{from}px</span>
+              </label>
+              <input
+                type="range" min={-80} max={80} value={from}
+                onChange={(e) => setFrom(Number(e.target.value))}
+              />
+            </div>
+            <div className="control-row">
+              <label>
+                <span>mid</span>
+                <span className="value">{mid}px</span>
+              </label>
+              <input
+                type="range" min={-80} max={80} value={mid}
+                onChange={(e) => setMid(Number(e.target.value))}
+              />
+            </div>
+            <div className="control-row">
+              <label>
+                <span>to</span>
+                <span className="value">{to}px</span>
+              </label>
+              <input
+                type="range" min={-80} max={80} value={to}
+                onChange={(e) => setTo(Number(e.target.value))}
+              />
+            </div>
+            <div className="control-row">
+              <label>
+                <span>opacityFrom</span>
+                <span className="value">{opacityFrom.toFixed(2)}</span>
+              </label>
+              <input
+                type="range" min={0} max={1} step={0.05} value={opacityFrom}
+                onChange={(e) => setOpacityFrom(Number(e.target.value))}
+              />
+            </div>
+            <div className="control-row">
+              <label>
+                <span>opacityMid</span>
+                <span className="value">{opacityMid.toFixed(2)}</span>
+              </label>
+              <input
+                type="range" min={0} max={1} step={0.05} value={opacityMid}
+                onChange={(e) => setOpacityMid(Number(e.target.value))}
+              />
+            </div>
+            <div className="control-row">
+              <label>
+                <span>opacityTo</span>
+                <span className="value">{opacityTo.toFixed(2)}</span>
+              </label>
+              <input
+                type="range" min={0} max={1} step={0.05} value={opacityTo}
+                onChange={(e) => setOpacityTo(Number(e.target.value))}
+              />
+            </div>
+          </div>
+          <pre className="controls-snippet"><code>{snippet}</code></pre>
+        </div>
+      </div>
+
+      <div className="container scroll-row">
+        <div className="scroll-text">
+          <p>
+            Without <code>mid</code> / <code>opacityMid</code>, the animation
+            interpolates linearly from start to end — two-stop behaviour
+            unchanged from v0.2. Set either of them and the 50% keyframe
+            becomes an anchor: the animation passes through that point at the
+            halfway mark of the scroll range.
+          </p>
+          <p>
+            The defaults above show the canonical pulse — translate from{" "}
+            <code>+40px</code> down to <code>0</code> and back up to{" "}
+            <code>+40px</code>, with opacity ramping <code>0 → 1 → 0</code>{" "}
+            in sync. The card rises, settles, fades out.
+          </p>
+          <p>
+            Drag <code>opacityMid</code> down to <code>0</code> and the card
+            disappears at the apex instead of being visible. Drag{" "}
+            <code>mid</code> to match <code>from</code> or <code>to</code>{" "}
+            and the easing changes shape — no JS needed to hold or pause.
+          </p>
+        </div>
+        <div className="scroll-card-col">
+          <Parallax
+            from={from}
+            mid={mid}
+            to={to}
+            opacityFrom={opacityFrom}
+            opacityMid={opacityMid}
+            opacityTo={opacityTo}
+          >
+            <div className="demo-card" style={{ background: "var(--card-c)" }}>5</div>
+          </Parallax>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─────────────── Card 6: everything combined ─────────────── */
 
 const EASING_PRESETS = [
   { label: "linear", value: "linear" },
@@ -310,11 +562,13 @@ const EASING_PRESETS = [
   { label: "snap (custom bezier)", value: "cubic-bezier(0.7, 0, 0.3, 1)" },
 ] as const;
 
-function Card4Combined() {
+function Card6Combined() {
   const [amplitude, setAmplitude] = useState(80);
   const [axis, setAxis] = useState<ParallaxAxis>("y");
   const [opacityFrom, setOpacityFrom] = useState(0.3);
   const [opacityTo, setOpacityTo] = useState(1);
+  const [scaleFrom, setScaleFrom] = useState(0.95);
+  const [scaleTo, setScaleTo] = useState(1);
   const [range, setRange] = useState<string>(RANGE_PRESETS[0].value);
   const [easing, setEasing] = useState<string>(EASING_PRESETS[0].value);
 
@@ -323,6 +577,8 @@ function Card4Combined() {
     axis === "x" ? `  axis="x"` : null,
     `  opacityFrom={${opacityFrom}}`,
     `  opacityTo={${opacityTo}}`,
+    scaleFrom !== 1 ? `  scaleFrom={${scaleFrom}}` : null,
+    scaleTo !== 1 ? `  scaleTo={${scaleTo}}` : null,
     range !== RANGE_PRESETS[0].value ? `  range="${range}"` : null,
     easing !== EASING_PRESETS[0].value ? `  easing="${easing}"` : null,
   ].filter(Boolean);
@@ -331,7 +587,7 @@ function Card4Combined() {
   return (
     <section className="demo-section">
       <div className="container">
-        <h2><span className="num">4</span> Compose it all</h2>
+        <h2><span className="num">6</span> Compose it all</h2>
         <p className="lede">
           Every prop on the same instance. Each <code>&lt;Parallax&gt;</code>{" "}
           on a page is independent — values don't bleed across siblings.
@@ -380,6 +636,26 @@ function Card4Combined() {
               />
             </div>
             <div className="control-row">
+              <label>
+                <span>scaleFrom</span>
+                <span className="value">{scaleFrom.toFixed(2)}</span>
+              </label>
+              <input
+                type="range" min={0.5} max={1.5} step={0.05} value={scaleFrom}
+                onChange={(e) => setScaleFrom(Number(e.target.value))}
+              />
+            </div>
+            <div className="control-row">
+              <label>
+                <span>scaleTo</span>
+                <span className="value">{scaleTo.toFixed(2)}</span>
+              </label>
+              <input
+                type="range" min={0.5} max={1.5} step={0.05} value={scaleTo}
+                onChange={(e) => setScaleTo(Number(e.target.value))}
+              />
+            </div>
+            <div className="control-row">
               <label><span>range</span></label>
               <select className="select" value={range} onChange={(e) => setRange(e.target.value)}>
                 {RANGE_PRESETS.map((p) => (
@@ -403,9 +679,9 @@ function Card4Combined() {
       <div className="container scroll-row">
         <div className="scroll-text">
           <p>
-            All six knobs on one card. Translate magnitude, axis direction,
-            opacity ramp, where in the scroll the animation plays, and the
-            easing curve between start and end.
+            All knobs on one card. Translate magnitude, axis direction,
+            opacity ramp, scale, where in the scroll the animation plays, and
+            the easing curve between start and end.
           </p>
           <p>
             Each <code>&lt;Parallax&gt;</code> sets its own CSS custom
@@ -426,10 +702,12 @@ function Card4Combined() {
             axis={axis}
             opacityFrom={opacityFrom}
             opacityTo={opacityTo}
+            scaleFrom={scaleFrom}
+            scaleTo={scaleTo}
             range={range}
             easing={easing}
           >
-            <div className="demo-card" style={{ background: "var(--card-d)" }}>4</div>
+            <div className="demo-card" style={{ background: "var(--card-d)" }}>6</div>
           </Parallax>
         </div>
       </div>
@@ -469,6 +747,12 @@ function ApiSection() {
               <td>Start translate in px. Overrides amplitude.</td>
             </tr>
             <tr>
+              <td><code>mid</code></td>
+              <td><code>number</code></td>
+              <td><code>(from + to) / 2</code></td>
+              <td>Middle translate in px (50% keyframe). Set explicitly to create a pulse / three-stop drift.</td>
+            </tr>
+            <tr>
               <td><code>to</code></td>
               <td><code>number</code></td>
               <td>—</td>
@@ -487,10 +771,40 @@ function ApiSection() {
               <td>Start opacity. Ramp runs only when at least one opacity prop is set.</td>
             </tr>
             <tr>
+              <td><code>opacityMid</code></td>
+              <td><code>number</code></td>
+              <td><code>(opacityFrom + opacityTo) / 2</code></td>
+              <td>Middle opacity (50% keyframe). Set explicitly for fade-in-then-out pulses.</td>
+            </tr>
+            <tr>
               <td><code>opacityTo</code></td>
               <td><code>number</code></td>
               <td><code>1</code></td>
               <td>End opacity.</td>
+            </tr>
+            <tr>
+              <td><code>scaleFrom</code></td>
+              <td><code>number</code></td>
+              <td><code>1</code></td>
+              <td>Start scale multiplier (unitless).</td>
+            </tr>
+            <tr>
+              <td><code>scaleTo</code></td>
+              <td><code>number</code></td>
+              <td><code>1</code></td>
+              <td>End scale multiplier.</td>
+            </tr>
+            <tr>
+              <td><code>rotateFrom</code></td>
+              <td><code>number</code></td>
+              <td><code>0</code></td>
+              <td>Start rotation in degrees.</td>
+            </tr>
+            <tr>
+              <td><code>rotateTo</code></td>
+              <td><code>number</code></td>
+              <td><code>0</code></td>
+              <td>End rotation in degrees.</td>
             </tr>
             <tr>
               <td><code>range</code></td>
@@ -588,9 +902,9 @@ function Caveats() {
         <h2>Caveats</h2>
         <ul className="caveats">
           <li>
-            <strong>Single-purpose.</strong> Drift and opacity on scroll,
-            nothing else. No spring physics, no gesture handling, no layout
-            animations.
+            <strong>Single-purpose.</strong> Translate, opacity, scale and
+            rotate on scroll, nothing else. No spring physics, no gesture
+            handling, no layout animations.
           </li>
           <li>
             <strong>Adds one wrapper DOM node.</strong> If that matters,
