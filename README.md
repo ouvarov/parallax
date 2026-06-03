@@ -6,13 +6,13 @@
 [![license](https://img.shields.io/npm/l/@ouvarov/scroll-parallax)](LICENSE)
 [![downloads](https://img.shields.io/npm/dm/@ouvarov/scroll-parallax)](https://www.npmjs.com/package/@ouvarov/scroll-parallax)
 
-One React component for scroll-driven animation. Translate, opacity, scale, rotate — all four scroll-animatable CSS properties in one component, under 1 KB gzipped total runtime. The animation itself is pure CSS `animation-timeline: view()`.
+One React component for scroll-driven animation. Translate, opacity, scale, rotate — all four scroll-animatable CSS properties in one component, under 1 KB gzipped total runtime. Plus `<FadeOnView>`, a one-tag wrapper for the common fade-in-on-enter case. The animation itself is pure CSS `animation-timeline: view()`.
 
 📺 **Live demo & docs:** https://ouvarov.github.io/scroll-parallax/
 
 ```
-JS:   1.0 KB raw  /  511 B gzipped
-CSS:  2.6 KB raw  /  482 B gzipped
+JS:   1.2 KB raw  /  581 B gzipped  (both components)
+CSS:  2.7 KB raw  /  497 B gzipped
 ```
 
 ## Install
@@ -92,7 +92,31 @@ Card translates from `+40px` to `0` then back to `+40px`, fading in at the apex 
 </Parallax>
 ```
 
+### FadeOnView — the common case
+
+Fade in as the element enters the viewport. No opacity props, no `range` to remember.
+
+```tsx
+import { FadeOnView } from "@ouvarov/scroll-parallax";
+
+<FadeOnView>
+  <Card />
+</FadeOnView>
+```
+
+This is exactly `<Parallax opacityFrom={0} opacityTo={1} range="entry">`. Pass `rise` for an upward drift on the way in:
+
+```tsx
+<FadeOnView rise={24}>
+  <Card />
+</FadeOnView>
+```
+
+The card starts 24px lower and settles as it fades. `rise={0}` (the default) is a pure fade.
+
 ## Props
+
+### `<Parallax>`
 
 | prop | type | default | notes |
 |------|------|---------|-------|
@@ -113,6 +137,15 @@ Card translates from `+40px` to `0` then back to `+40px`, fading in at the apex 
 | `className` | `string` | — | Merged onto the wrapper. |
 | `style` | `CSSProperties` | — | Merged onto the wrapper. |
 | `children` | `ReactNode` | — | Whatever you want to animate. |
+
+### `<FadeOnView>`
+
+Sugar over `<Parallax>`. Forwards `className`, `style` and `easing` unchanged.
+
+| prop | type | default | notes |
+|------|------|---------|-------|
+| `rise` | `number` | `0` | Upward drift in px on the way in. `0` is a pure fade. |
+| `range` | `string` | `'entry'` | Where the fade plays — defaults to the element's entry into the viewport. |
 
 The component renders a `<div>` wrapper. The wrapper is the animated element.
 

@@ -480,6 +480,10 @@ pre code {
   letter-spacing: 0.05em;
 }
 .api-table td:first-child code { color: var(--accent); }
+.api-subhead {
+  margin-top: 2.5rem;
+  font-size: 1.15rem;
+}
 
 /* ============ Browser support ============ */
 .browser-table {

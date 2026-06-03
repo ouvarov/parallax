@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.4.0] — 2026-06-03
+
+- New `<FadeOnView>` component. One-tag sugar over `Parallax` for the most common scroll effect — fade in as the element enters the viewport. `<FadeOnView>` with no props equals `<Parallax opacityFrom={0} opacityTo={1} range="entry">`.
+- `rise` prop on `FadeOnView` adds an optional upward drift on the way in; `rise={0}` (default) is a pure fade. Forwards `className`, `style` and `easing` to `Parallax`.
+- Pure forward, no new CSS or runtime engine — adds ~70 bytes gzipped over the core.
+
+[0.4.0]: https://github.com/ouvarov/scroll-parallax/releases/tag/v0.4.0
+
 ## [0.3.0] — 2026-06-03
 
 - Three-stop animation. New `mid` prop for translate and `opacityMid` for opacity — drift in then back out, fade in at the apex then fade out. When not set, `mid` defaults to the midpoint of `from` and `to`, so existing two-stop animations are visually identical.

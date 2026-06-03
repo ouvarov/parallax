@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Parallax, type ParallaxAxis } from "@ouvarov/scroll-parallax";
+import { Parallax, FadeOnView, type ParallaxAxis } from "@ouvarov/scroll-parallax";
 
 export function App() {
   return (
@@ -11,6 +11,7 @@ export function App() {
       <Card4ScaleRotate />
       <Card5Pulse />
       <Card6Combined />
+      <Card7FadeOnView />
       <ApiSection />
       <BrowserSupport />
       <Caveats />
@@ -715,6 +716,77 @@ function Card6Combined() {
   );
 }
 
+/* ─────────────── Card 7: FadeOnView sugar ─────────────── */
+
+function Card7FadeOnView() {
+  const [rise, setRise] = useState(24);
+
+  const snippet = rise === 0
+    ? `<FadeOnView>
+  <Card />
+</FadeOnView>`
+    : `<FadeOnView rise={${rise}}>
+  <Card />
+</FadeOnView>`;
+
+  return (
+    <section className="demo-section">
+      <div className="container">
+        <h2><span className="num">7</span> FadeOnView — the common case</h2>
+        <p className="lede">
+          The one-tag wrapper for the most frequent scroll effect: fade in as
+          the element enters the viewport. Sugar over <code>&lt;Parallax&gt;</code>{" "}
+          — no opacity props, no <code>range</code> to remember.
+        </p>
+
+        <div className="controls-bar">
+          <div className="controls-grid">
+            <div className="control-row">
+              <label>
+                <span>rise</span>
+                <span className="value">{rise}px</span>
+              </label>
+              <input
+                type="range" min={0} max={80} value={rise}
+                onChange={(e) => setRise(Number(e.target.value))}
+              />
+            </div>
+          </div>
+          <pre className="controls-snippet"><code>{snippet}</code></pre>
+        </div>
+      </div>
+
+      <div className="container scroll-row">
+        <div className="scroll-text">
+          <p>
+            <code>&lt;FadeOnView&gt;</code> with no props is exactly{" "}
+            <code>&lt;Parallax opacityFrom={"{0}"} opacityTo={"{1}"} range="entry"&gt;</code>.
+            It fades from invisible to visible across the element's entry into
+            the viewport, then holds — the <code>animation-fill-mode: both</code>{" "}
+            from v0.2.1 keeps it solid once revealed.
+          </p>
+          <p>
+            The single <code>rise</code> prop adds an upward drift on the way
+            in: the card starts <code>rise</code> pixels lower and settles to
+            its natural position as it fades. Set it to <code>0</code> for a
+            pure fade with no motion.
+          </p>
+          <p>
+            Same byte budget thesis — it adds about 70 bytes gzipped over the
+            core, because it's a thin forward to <code>Parallax</code>, not a
+            second engine.
+          </p>
+        </div>
+        <div className="scroll-card-col">
+          <FadeOnView rise={rise}>
+            <div className="demo-card" style={{ background: "var(--card-b)" }}>7</div>
+          </FadeOnView>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 /* ─────────────── API table ─────────────── */
 
 function ApiSection() {
@@ -835,6 +907,36 @@ function ApiSection() {
               <td><code>ReactNode</code></td>
               <td>—</td>
               <td>Whatever you want to animate.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3 className="api-subhead"><code>&lt;FadeOnView&gt;</code></h3>
+        <p className="lede">
+          Sugar over <code>&lt;Parallax&gt;</code> for fade-in-on-enter. Forwards{" "}
+          <code>className</code>, <code>style</code> and <code>easing</code> unchanged.
+        </p>
+        <table className="api-table">
+          <thead>
+            <tr>
+              <th>Prop</th>
+              <th>Type</th>
+              <th>Default</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>rise</code></td>
+              <td><code>number</code></td>
+              <td><code>0</code></td>
+              <td>Upward drift in px on the way in. <code>0</code> is a pure fade.</td>
+            </tr>
+            <tr>
+              <td><code>range</code></td>
+              <td><code>string</code></td>
+              <td><code>'entry'</code></td>
+              <td>Where the fade plays. Defaults to the element's entry into the viewport.</td>
             </tr>
           </tbody>
         </table>
