@@ -102,8 +102,61 @@
   .ouvarov-parallax { animation-duration: 1ms; }
 }
 
+/* Stagger: the wrapper is not animated; each direct child runs the parallax
+   animation on its own view() timeline. The reveal WINDOW comes from the
+   `range` prop (--ouvarov-stagger-rs..--ouvarov-stagger-re); the cascade
+   offsets only the START per child by --ouvarov-stagger × child-index, so all
+   children share the same END and land at the same point. Caps at 24 children
+   — beyond that they share the 24th offset. */
+.ouvarov-parallax-stagger > * {
+  animation-name: ouvarov-parallax-y;
+  animation-timing-function: linear;
+  animation-timeline: view();
+  animation-fill-mode: both;
+  animation-range-start:
+    var(--ouvarov-stagger-rs-name, cover)
+    calc(var(--ouvarov-stagger-rs, 0%) + var(--ouvarov-stagger, 0%) * var(--ouvarov-stagger-i, 0));
+  animation-range-end:
+    var(--ouvarov-stagger-re-name, cover)
+    var(--ouvarov-stagger-re, 50%);
+}
+
+.ouvarov-parallax-stagger[data-axis="x"] > * {
+  animation-name: ouvarov-parallax-x;
+}
+
+@supports (animation-timeline: view()) {
+  .ouvarov-parallax-stagger > * { animation-duration: 1ms; }
+}
+
+.ouvarov-parallax-stagger > *:nth-child(2)  { --ouvarov-stagger-i: 1; }
+.ouvarov-parallax-stagger > *:nth-child(3)  { --ouvarov-stagger-i: 2; }
+.ouvarov-parallax-stagger > *:nth-child(4)  { --ouvarov-stagger-i: 3; }
+.ouvarov-parallax-stagger > *:nth-child(5)  { --ouvarov-stagger-i: 4; }
+.ouvarov-parallax-stagger > *:nth-child(6)  { --ouvarov-stagger-i: 5; }
+.ouvarov-parallax-stagger > *:nth-child(7)  { --ouvarov-stagger-i: 6; }
+.ouvarov-parallax-stagger > *:nth-child(8)  { --ouvarov-stagger-i: 7; }
+.ouvarov-parallax-stagger > *:nth-child(9)  { --ouvarov-stagger-i: 8; }
+.ouvarov-parallax-stagger > *:nth-child(10) { --ouvarov-stagger-i: 9; }
+.ouvarov-parallax-stagger > *:nth-child(11) { --ouvarov-stagger-i: 10; }
+.ouvarov-parallax-stagger > *:nth-child(12) { --ouvarov-stagger-i: 11; }
+.ouvarov-parallax-stagger > *:nth-child(13) { --ouvarov-stagger-i: 12; }
+.ouvarov-parallax-stagger > *:nth-child(14) { --ouvarov-stagger-i: 13; }
+.ouvarov-parallax-stagger > *:nth-child(15) { --ouvarov-stagger-i: 14; }
+.ouvarov-parallax-stagger > *:nth-child(16) { --ouvarov-stagger-i: 15; }
+.ouvarov-parallax-stagger > *:nth-child(17) { --ouvarov-stagger-i: 16; }
+.ouvarov-parallax-stagger > *:nth-child(18) { --ouvarov-stagger-i: 17; }
+.ouvarov-parallax-stagger > *:nth-child(19) { --ouvarov-stagger-i: 18; }
+.ouvarov-parallax-stagger > *:nth-child(20) { --ouvarov-stagger-i: 19; }
+.ouvarov-parallax-stagger > *:nth-child(21) { --ouvarov-stagger-i: 20; }
+.ouvarov-parallax-stagger > *:nth-child(22) { --ouvarov-stagger-i: 21; }
+.ouvarov-parallax-stagger > *:nth-child(23) { --ouvarov-stagger-i: 22; }
+.ouvarov-parallax-stagger > *:nth-child(24) { --ouvarov-stagger-i: 23; }
+.ouvarov-parallax-stagger > *:nth-child(n+25) { --ouvarov-stagger-i: 23; }
+
 @media (prefers-reduced-motion: reduce) {
-  .ouvarov-parallax {
+  .ouvarov-parallax,
+  .ouvarov-parallax-stagger > * {
     animation: none !important;
     translate: none !important;
     scale: none !important;

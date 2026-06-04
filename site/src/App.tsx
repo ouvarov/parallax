@@ -13,6 +13,7 @@ export function App() {
       <Card6Combined />
       <Card7FadeOnView />
       <Card8RevealOnView />
+      <Card9Stagger />
       <ApiSection />
       <BrowserSupport />
       <Caveats />
@@ -901,6 +902,128 @@ function Card8RevealOnView() {
   );
 }
 
+/* ─────────────── Card 9: stagger ─────────────── */
+
+const STAGGER_COLORS = [
+  "var(--card-a)", "var(--card-b)", "var(--card-c)",
+  "var(--card-d)", "var(--card-a)", "var(--card-b)",
+];
+
+function Card9Stagger() {
+  const [stagger, setStagger] = useState(6);
+  const [from, setFrom] = useState(0);
+  const [to, setTo] = useState(50);
+  const range = `cover ${from}% cover ${to}%`;
+
+  const snippet = `<Parallax stagger={${stagger}} range="${range}"
+  from={40} to={0} opacityFrom={0} opacityTo={1}>
+  {items.map((i) => <Card key={i} />)}
+</Parallax>`;
+
+  return (
+    <section className="demo-section">
+      <div className="container">
+        <h2><span className="num">9</span> stagger — cascade across children</h2>
+        <p className="lede">
+          Set <code>stagger</code> on a <code>&lt;Parallax&gt;</code> and it
+          stops animating itself — instead each direct child runs the animation
+          in a cascade. <code>range</code> says where the reveal happens; the
+          cascade offsets each child's <em>start</em> inside it, and they all
+          land at the <code>range</code> end. No mapping over children, no JS.
+        </p>
+
+        <div className="controls-bar">
+          <div className="controls-grid">
+            <div className="control-row">
+              <label>
+                <span>stagger</span>
+                <span className="value">{stagger}%</span>
+              </label>
+              <input
+                type="range" min={0} max={12} value={stagger}
+                onChange={(e) => setStagger(Number(e.target.value))}
+              />
+            </div>
+            <div className="control-row">
+              <label>
+                <span>range from</span>
+                <span className="value">cover {from}%</span>
+              </label>
+              <input
+                type="range" min={0} max={50} value={from}
+                onChange={(e) => setFrom(Number(e.target.value))}
+              />
+            </div>
+            <div className="control-row">
+              <label>
+                <span>range to</span>
+                <span className="value">cover {to}%</span>
+              </label>
+              <input
+                type="range" min={50} max={100} value={to}
+                onChange={(e) => setTo(Number(e.target.value))}
+              />
+            </div>
+          </div>
+          <pre className="controls-snippet"><code>{snippet}</code></pre>
+        </div>
+      </div>
+
+      <div className="container scroll-row">
+        <div className="scroll-text">
+          <p>
+            <code>range</code> is where it lands. <code>cover 50%</code> is the
+            viewport center — set the end there and the cascade is fully
+            revealed by the time you're looking at it, instead of only at the
+            very top (<code>cover 100%</code>). Drag <em>range to</em> up to{" "}
+            <code>100%</code> to feel the difference.
+          </p>
+          <p>
+            The cascade unit is a percentage of view progress, not milliseconds
+            — scroll-driven animations ignore time-based{" "}
+            <code>animation-delay</code>, so each child's{" "}
+            <code>animation-range-start</code> is shifted instead, while the end
+            stays shared. Child <em>n</em> starts at{" "}
+            <code>{from} + (n−1) × stagger</code>%.
+          </p>
+          <p>
+            Works best on a group that enters together — a row or grid. Pure
+            CSS, capped at 24 children (beyond that they share the last offset).
+            Keep <code>from + stagger × count</code> under the <code>range</code>{" "}
+            end so nobody starts after everyone's landed.
+          </p>
+        </div>
+        <div className="scroll-card-col">
+          <Parallax
+            stagger={stagger}
+            range={range}
+            from={40}
+            to={0}
+            opacityFrom={0}
+            opacityTo={1}
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(3, 1fr)",
+              gap: "0.75rem",
+              width: "100%",
+            }}
+          >
+            {STAGGER_COLORS.map((bg, i) => (
+              <div
+                key={i}
+                className="demo-card"
+                style={{ background: bg, width: "auto", aspectRatio: "1", minHeight: 0 }}
+              >
+                {i + 1}
+              </div>
+            ))}
+          </Parallax>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 /* ─────────────── API table ─────────────── */
 
 function ApiSection() {
@@ -993,10 +1116,16 @@ function ApiSection() {
               <td>End rotation in degrees.</td>
             </tr>
             <tr>
+              <td><code>stagger</code></td>
+              <td><code>number</code></td>
+              <td>—</td>
+              <td>When set, the wrapper isn't animated — each direct child runs the animation, offset by this percentage of view progress per child (cascade). <code>range</code> sets the window; children share its end. Pure CSS via <code>:nth-child</code>, capped at 24 children.</td>
+            </tr>
+            <tr>
               <td><code>range</code></td>
               <td><code>string</code></td>
-              <td><code>'cover 0% cover 100%'</code></td>
-              <td>Any valid <code>animation-range</code>. Controls where in the scroll progress the animation plays — the "speed" knob.</td>
+              <td><code>'cover 0% cover 100%'</code><br/>(<code>'cover 0% cover 50%'</code> with <code>stagger</code>)</td>
+              <td>Any valid <code>animation-range</code> — where in the scroll the animation plays. With <code>stagger</code>, it's the cascade window (use the <code>"&lt;name&gt; n% &lt;name&gt; n%"</code> form); <code>cover 50%</code> ends at the viewport center.</td>
             </tr>
             <tr>
               <td><code>easing</code></td>

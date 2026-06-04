@@ -11,8 +11,8 @@ One React component for scroll-driven animation. Translate, opacity, scale, rota
 📺 **Live demo & docs:** https://ouvarov.github.io/scroll-parallax/
 
 ```
-JS:   1.7 KB raw  /  757 B gzipped  (all components)
-CSS:  2.7 KB raw  /  497 B gzipped
+JS:   2.1 KB raw  /  946 B gzipped  (all components)
+CSS:  5.4 KB raw  /  1.0 KB gzipped
 ```
 
 ## Install
@@ -74,6 +74,21 @@ Card translates from `+40px` to `0` then back to `+40px`, fading in at the apex 
   <img src="..." />
 </Parallax>
 ```
+
+### Stagger — cascade across children
+
+Set `stagger` and `<Parallax>` stops animating itself — instead each direct child runs the animation in a cascade. No mapping over children, no JS: each child's `animation-range-start` is shifted by an `:nth-child` rule.
+
+```tsx
+<Parallax stagger={6} range="cover 0% cover 50%"
+          from={40} to={0} opacityFrom={0} opacityTo={1}>
+  {items.map((i) => <Card key={i} />)}
+</Parallax>
+```
+
+`range` is the cascade window — **you decide where the reveal lands**. The cascade offsets each child's *start* inside it; the *end* is shared, so every child finishes at the same point. `cover 50%` is the viewport center, so the group is fully revealed by the time it's in the reading zone — not only at the very top (`cover 100%`). With `stagger`, give `range` in the explicit `"<name> n% <name> n%"` form (default `cover 0% cover 50%`).
+
+The cascade unit is a **percentage of view progress per child**, not milliseconds — scroll-driven animations ignore time-based `animation-delay`. Child *n* starts at `from + (n−1) × stagger`%. Works best on a group that enters together (a row or grid). Pure CSS, capped at **24 children** (beyond that they share the last offset); keep `from + stagger × count` under the `range` end.
 
 ### Compose everything
 
@@ -156,7 +171,8 @@ It's still a scroll-driven animation: at normal scroll speed it reads as an entr
 | `scaleTo` | `number` | `1` | End scale multiplier. |
 | `rotateFrom` | `number` | `0` | Start rotation in degrees. |
 | `rotateTo` | `number` | `0` | End rotation in degrees. |
-| `range` | `string` | `'cover 0% cover 100%'` | Any valid [`animation-range`](https://developer.mozilla.org/en-US/docs/Web/CSS/animation-range) — controls where in the scroll progress the animation plays. |
+| `stagger` | `number` | — | When set, the wrapper isn't animated — each direct child runs the animation, offset by this percentage of view progress per child. `range` sets the window; children share its end. Pure CSS via `:nth-child`, capped at 24 children. |
+| `range` | `string` | `'cover 0% cover 100%'`<br/>(`'cover 0% cover 50%'` with `stagger`) | Any valid [`animation-range`](https://developer.mozilla.org/en-US/docs/Web/CSS/animation-range) — where in the scroll the animation plays. With `stagger`, it's the cascade window (use the `"<name> n% <name> n%"` form); `cover 50%` ends at the viewport center. |
 | `easing` | `string` | `'linear'` | Any valid [`animation-timing-function`](https://developer.mozilla.org/en-US/docs/Web/CSS/animation-timing-function). |
 | `className` | `string` | — | Merged onto the wrapper. |
 | `style` | `CSSProperties` | — | Merged onto the wrapper. |

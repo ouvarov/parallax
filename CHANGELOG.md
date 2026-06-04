@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.6.0] — 2026-06-04
+
+- New `stagger` prop on `<Parallax>`. When set, the wrapper stops animating itself — each direct child runs the animation instead, in a cascade. No mapping over children, no JS: each child's `animation-range-start` is shifted by an `:nth-child` rule.
+- `range` is the cascade window — you decide where the reveal lands. The cascade offsets each child's start inside it; the end is shared, so every child finishes at the same point. Defaults to `cover 0% cover 50%` (viewport center) so the group is fully revealed in the reading zone, not only at the top. Use the explicit `"<name> n% <name> n%"` form.
+- The cascade unit is a percentage of view progress per child, not milliseconds — scroll-driven animations ignore time-based `animation-delay`. Child *n* starts at `from + (n−1) × stagger`%.
+- Pure CSS, capped at 24 children (beyond that they share the last offset). Works best on a group that enters together (a row or grid).
+
+[0.6.0]: https://github.com/ouvarov/scroll-parallax/releases/tag/v0.6.0
+
 ## [0.5.0] — 2026-06-04
 
 - New `<RevealOnView>` component. The element stays hidden until it reaches a trigger line on the way up the viewport (by default the lower third), then plays a short ease-out reveal and holds. Where `FadeOnView` ramps across the whole entry, `RevealOnView` waits at the threshold, then reveals over a brief span.
