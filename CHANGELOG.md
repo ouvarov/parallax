@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.7.0] — 2026-06-04
+
+- New `<ScrollProgress>` component. A fixed bar pinned to the top (or bottom) of the page that fills left-to-right as the document scrolls. Drop one tag at the root of your app — no scroll listener, no `useState`, no effect.
+- Page-level by design: driven by `animation-timeline: scroll(root block)` (the whole document's scroll), not `view()` (a single element's entry/exit) like the rest of the library.
+- The fill is a composite-only `scaleX` from a left origin, so the bar never lays out or paints while you scroll — it rides the compositor.
+- Props: `height` (number → px, or string), `color` (default `currentColor`), `position` (`"top"` | `"bottom"`, default `"top"`), `zIndex`. Adds ~150 bytes gzipped over the core.
+- Stays active under `prefers-reduced-motion`: it mirrors the native scrollbar position rather than adding decorative motion, and disabling it would hide the only thing it does.
+
+[0.7.0]: https://github.com/ouvarov/scroll-parallax/releases/tag/v0.7.0
+
 ## [0.6.0] — 2026-06-04
 
 - New `stagger` prop on `<Parallax>`. When set, the wrapper stops animating itself — each direct child runs the animation instead, in a cascade. No mapping over children, no JS: each child's `animation-range-start` is shifted by an `:nth-child` rule.

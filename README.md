@@ -6,7 +6,7 @@
 [![license](https://img.shields.io/npm/l/@ouvarov/scroll-parallax)](LICENSE)
 [![downloads](https://img.shields.io/npm/dm/@ouvarov/scroll-parallax)](https://www.npmjs.com/package/@ouvarov/scroll-parallax)
 
-One React component for scroll-driven animation. Translate, opacity, scale, rotate — all four scroll-animatable CSS properties in one component, under 1 KB gzipped total runtime. Plus `<FadeOnView>` and `<RevealOnView>`, one-tag wrappers for the common reveal-on-scroll cases. The animation itself is pure CSS `animation-timeline: view()`.
+One React component for scroll-driven animation. Translate, opacity, scale, rotate — all four scroll-animatable CSS properties in one component, under 1 KB gzipped total runtime. Plus `<FadeOnView>` and `<RevealOnView>`, one-tag wrappers for the common reveal-on-scroll cases, and `<ScrollProgress>`, a page-level reading-progress bar. The animation itself is pure CSS `animation-timeline: view()` (or `scroll()` for the page bar).
 
 📺 **Live demo & docs:** https://ouvarov.github.io/scroll-parallax/
 
@@ -153,6 +153,22 @@ import { RevealOnView } from "@ouvarov/scroll-parallax";
 
 It's still a scroll-driven animation: at normal scroll speed it reads as an entrance, but scrubbing slowly tracks the scroll, and it's **reversible** (scroll back up past the line and it hides again). A time-based one-shot would need JS, which this package deliberately avoids.
 
+### ScrollProgress — page reading bar
+
+A fixed bar that fills as the whole page scrolls. Drop one tag at the root of your app — no scroll listener, no `useState`. Unlike the rest of the library it tracks the document with `animation-timeline: scroll()`, not a single element's `view()`.
+
+```tsx
+import { ScrollProgress } from "@ouvarov/scroll-parallax";
+
+<ScrollProgress />                                  {/* 4px bar at the top, currentColor */}
+
+<ScrollProgress height={6} color="#7c3aed" />       {/* thicker, accent color */}
+
+<ScrollProgress position="bottom" />                {/* pin to the bottom edge */}
+```
+
+The fill is a composite-only `scaleX`, so the bar rides the compositor and never lays out or paints while you scroll. It stays active under `prefers-reduced-motion` — it mirrors the native scrollbar rather than adding decorative motion.
+
 ## Props
 
 ### `<Parallax>`
@@ -196,6 +212,19 @@ Sugar over `<Parallax>`. Forwards `className` and `style` unchanged.
 | `effect` | `'fade' \| 'scale' \| 'both'` | `'fade'` | `fade` ramps opacity 0→1, `scale` grows from 0→1, `both` combines them. Eases in with `ease-out`. |
 | `threshold` | `number` | `0.3` | Trigger line — fraction of the element's pass where the reveal starts. Below it, the element is hidden. Clamped to 0–1. |
 | `span` | `number` | `0.15` | How much scroll the reveal takes after the threshold. Together: `range="cover {threshold×100}% cover {(threshold+span)×100}%"`. Smaller = snappier. |
+
+### `<ScrollProgress>`
+
+Standalone page-level bar — renders its own fixed `<div>`, takes no children.
+
+| prop | type | default | notes |
+|------|------|---------|-------|
+| `height` | `number \| string` | `4` | Bar thickness. Number → px; string used as-is. |
+| `color` | `string` | `currentColor` | Fill color. |
+| `position` | `'top' \| 'bottom'` | `'top'` | Which viewport edge to pin to. |
+| `zIndex` | `number` | `2147483647` | Stacking order — defaults high so it sits above page chrome. |
+| `className` | `string` | — | Merged onto the bar. |
+| `style` | `CSSProperties` | — | Merged onto the bar. |
 
 The component renders a `<div>` wrapper. The wrapper is the animated element.
 

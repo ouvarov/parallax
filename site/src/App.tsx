@@ -1,9 +1,14 @@
 import { useState } from "react";
-import { Parallax, FadeOnView, RevealOnView, type ParallaxAxis, type RevealEffect } from "@ouvarov/scroll-parallax";
+import { Parallax, FadeOnView, RevealOnView, ScrollProgress, type ParallaxAxis, type RevealEffect, type ScrollProgressPosition } from "@ouvarov/scroll-parallax";
 
 export function App() {
+  const [spHeight, setSpHeight] = useState(5);
+  const [spColor, setSpColor] = useState("#77ccff");
+  const [spPosition, setSpPosition] = useState<ScrollProgressPosition>("top");
+
   return (
     <>
+      <ScrollProgress height={spHeight} color={spColor} position={spPosition} />
       <Hero />
       <Card1FromTo />
       <Card2Speed />
@@ -14,6 +19,11 @@ export function App() {
       <Card7FadeOnView />
       <Card8RevealOnView />
       <Card9Stagger />
+      <Card10ScrollProgress
+        height={spHeight} setHeight={setSpHeight}
+        color={spColor} setColor={setSpColor}
+        position={spPosition} setPosition={setSpPosition}
+      />
       <ApiSection />
       <BrowserSupport />
       <Caveats />
@@ -1018,6 +1028,103 @@ function Card9Stagger() {
               </div>
             ))}
           </Parallax>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─────────────── Card 10: ScrollProgress ─────────────── */
+
+function Card10ScrollProgress({
+  height, setHeight, color, setColor, position, setPosition,
+}: {
+  height: number;
+  setHeight: (n: number) => void;
+  color: string;
+  setColor: (c: string) => void;
+  position: ScrollProgressPosition;
+  setPosition: (p: ScrollProgressPosition) => void;
+}) {
+  const snippet = `<ScrollProgress height={${height}}
+  color="${color}" position="${position}" />`;
+
+  return (
+    <section className="demo-section">
+      <div className="container">
+        <h2><span className="num">10</span> ScrollProgress — page reading bar</h2>
+        <p className="lede">
+          The bar pinned to the {position === "top" ? "top" : "bottom"} of this
+          page is a live <code>&lt;ScrollProgress&gt;</code> — it's been filling
+          as you scrolled the whole way down. Drop one tag at the root of your
+          app: no scroll listener, no <code>useState</code>, no effect. The
+          controls below drive the real bar.
+        </p>
+
+        <div className="controls-bar">
+          <div className="controls-grid">
+            <div className="control-row">
+              <label>
+                <span>height</span>
+                <span className="value">{height}px</span>
+              </label>
+              <input
+                type="range" min={2} max={16} value={height}
+                onChange={(e) => setHeight(Number(e.target.value))}
+              />
+            </div>
+            <div className="control-row">
+              <label>
+                <span>color</span>
+                <span className="value">{color}</span>
+              </label>
+              <input
+                type="color" value={color}
+                onChange={(e) => setColor(e.target.value)}
+              />
+            </div>
+            <div className="control-row">
+              <label>
+                <span>position</span>
+                <span className="value">{position}</span>
+              </label>
+              <input
+                type="range" min={0} max={1} value={position === "top" ? 0 : 1}
+                onChange={(e) => setPosition(Number(e.target.value) === 0 ? "top" : "bottom")}
+              />
+            </div>
+          </div>
+          <pre className="controls-snippet"><code>{snippet}</code></pre>
+        </div>
+      </div>
+
+      <div className="container scroll-row">
+        <div className="scroll-text">
+          <p>
+            Unlike every other demo here, this one isn't driven by{" "}
+            <code>view()</code> (a single element entering the viewport) — it's{" "}
+            <code>animation-timeline: scroll(root block)</code>, the progress of
+            the <em>whole document</em>. One timeline, page-wide.
+          </p>
+          <p>
+            The fill is a composite-only <code>scaleX</code> from a left origin,
+            so the bar rides the compositor — it never lays out or paints while
+            you scroll, no matter how long the page gets.
+          </p>
+          <p>
+            It stays active under <code>prefers-reduced-motion</code> on purpose:
+            it mirrors the native scrollbar position rather than adding
+            decorative motion, and hiding it would remove the only thing it does.
+            Scroll back up — it tracks you in reverse.
+          </p>
+        </div>
+        <div className="scroll-card-col">
+          <div
+            className="demo-card"
+            style={{ background: color, color: "#0b0b0f", display: "grid", placeItems: "center", textAlign: "center", padding: "1rem" }}
+          >
+            look up ↑<br />that bar is me
+          </div>
         </div>
       </div>
     </section>

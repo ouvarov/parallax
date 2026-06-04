@@ -1,6 +1,6 @@
 {
   "name": "@ouvarov/scroll-parallax",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Scroll parallax for React in under 1 KB. Translate, opacity, scale, rotate, stagger, plus FadeOnView and RevealOnView wrappers. Zero JS at runtime. Pure CSS animation-timeline: view().",
   "keywords": [
     "react",

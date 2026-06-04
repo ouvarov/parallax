@@ -8,3 +8,6 @@ export type { FadeOnViewProps } from "./FadeOnView";
 
 export { RevealOnView } from "./RevealOnView";
 export type { RevealOnViewProps, RevealEffect } from "./RevealOnView";
+
+export { ScrollProgress } from "./ScrollProgress";
+export type { ScrollProgressProps, ScrollProgressPosition } from "./ScrollProgress";

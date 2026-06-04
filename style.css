@@ -164,3 +164,39 @@
     opacity: 1 !important;
   }
 }
+
+/* ScrollProgress: page-level fill bar driven by scroll(root block) — the
+   document's scroll progress, NOT view() (element entry/exit). The fill is a
+   composite-only scaleX from a left origin, so scrolling never lays out or
+   paints the bar. */
+@keyframes ouvarov-scroll-progress {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+.ouvarov-scroll-progress {
+  position: fixed;
+  left: 0;
+  right: 0;
+  height: var(--ouvarov-scroll-progress-height, 4px);
+  background: var(--ouvarov-scroll-progress-color, currentColor);
+  transform: scaleX(0);
+  transform-origin: left center;
+  z-index: var(--ouvarov-scroll-progress-z, 2147483647);
+  pointer-events: none;
+  animation-name: ouvarov-scroll-progress;
+  animation-timing-function: linear;
+  animation-timeline: scroll(root block);
+  animation-fill-mode: both;
+}
+
+.ouvarov-scroll-progress[data-position="top"]    { top: 0; }
+.ouvarov-scroll-progress[data-position="bottom"] { bottom: 0; }
+
+@supports (animation-timeline: scroll()) {
+  .ouvarov-scroll-progress { animation-duration: 1ms; }
+}
+
+/* The bar mirrors the native scrollbar position rather than adding decorative
+   motion, so it stays active under reduced-motion — disabling it would hide
+   the only thing the component does. */
