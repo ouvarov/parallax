@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.5.0] — 2026-06-04
+
+- New `<RevealOnView>` component. The element stays hidden until it reaches a trigger line on the way up the viewport (by default the lower third), then plays a short ease-out reveal and holds. Where `FadeOnView` ramps across the whole entry, `RevealOnView` waits at the threshold, then reveals over a brief span.
+- `effect` prop picks the reveal: `"fade"` (opacity 0→1, default), `"scale"` (scale 0→1), or `"both"`.
+- `threshold` prop (default `0.3`) is the trigger line; `span` prop (default `0.15`) is how much scroll the reveal takes after it. Together they map to `range="cover {threshold×100}% cover {(threshold+span)×100}%"`. Both clamped to 0–1.
+- Reversible like any scroll-driven animation (scrolling back up past the line hides it again); a time-based one-shot would require JS and is intentionally out of scope.
+- Pure forward to `Parallax`, no new CSS — adds ~135 bytes gzipped over the core.
+
+[0.5.0]: https://github.com/ouvarov/scroll-parallax/releases/tag/v0.5.0
+
 ## [0.4.0] — 2026-06-03
 
 - New `<FadeOnView>` component. One-tag sugar over `Parallax` for the most common scroll effect — fade in as the element enters the viewport. `<FadeOnView>` with no props equals `<Parallax opacityFrom={0} opacityTo={1} range="entry">`.

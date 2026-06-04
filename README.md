@@ -6,12 +6,12 @@
 [![license](https://img.shields.io/npm/l/@ouvarov/scroll-parallax)](LICENSE)
 [![downloads](https://img.shields.io/npm/dm/@ouvarov/scroll-parallax)](https://www.npmjs.com/package/@ouvarov/scroll-parallax)
 
-One React component for scroll-driven animation. Translate, opacity, scale, rotate — all four scroll-animatable CSS properties in one component, under 1 KB gzipped total runtime. Plus `<FadeOnView>`, a one-tag wrapper for the common fade-in-on-enter case. The animation itself is pure CSS `animation-timeline: view()`.
+One React component for scroll-driven animation. Translate, opacity, scale, rotate — all four scroll-animatable CSS properties in one component, under 1 KB gzipped total runtime. Plus `<FadeOnView>` and `<RevealOnView>`, one-tag wrappers for the common reveal-on-scroll cases. The animation itself is pure CSS `animation-timeline: view()`.
 
 📺 **Live demo & docs:** https://ouvarov.github.io/scroll-parallax/
 
 ```
-JS:   1.2 KB raw  /  581 B gzipped  (both components)
+JS:   1.7 KB raw  /  757 B gzipped  (all components)
 CSS:  2.7 KB raw  /  497 B gzipped
 ```
 
@@ -114,6 +114,30 @@ This is exactly `<Parallax opacityFrom={0} opacityTo={1} range="entry">`. Pass `
 
 The card starts 24px lower and settles as it fades. `rise={0}` (the default) is a pure fade.
 
+### RevealOnView — animate in at a threshold
+
+The element stays hidden until it reaches a trigger line on the way up — by default the lower third — then plays a short ease-out reveal and holds. Where `FadeOnView` ramps across the whole entry, `RevealOnView` waits at the threshold, then reveals over a brief `span`.
+
+```tsx
+import { RevealOnView } from "@ouvarov/scroll-parallax";
+
+<RevealOnView>            {/* opacity 0 → 1, starting at 30% up */}
+  <Card />
+</RevealOnView>
+
+<RevealOnView effect="scale">   {/* scale 0 → 1 */}
+  <Card />
+</RevealOnView>
+
+<RevealOnView effect="both" threshold={0.5} span={0.1}>   {/* snappy grow + fade at center */}
+  <Card />
+</RevealOnView>
+```
+
+`threshold={0.3}` with `span={0.15}` maps to `range="cover 30% cover 45%"` — invisible below 30% of the pass, animating in across the next 15%, solid after. Shrink `span` for a snappier entrance.
+
+It's still a scroll-driven animation: at normal scroll speed it reads as an entrance, but scrubbing slowly tracks the scroll, and it's **reversible** (scroll back up past the line and it hides again). A time-based one-shot would need JS, which this package deliberately avoids.
+
 ## Props
 
 ### `<Parallax>`
@@ -146,6 +170,16 @@ Sugar over `<Parallax>`. Forwards `className`, `style` and `easing` unchanged.
 |------|------|---------|-------|
 | `rise` | `number` | `0` | Upward drift in px on the way in. `0` is a pure fade. |
 | `range` | `string` | `'entry'` | Where the fade plays — defaults to the element's entry into the viewport. |
+
+### `<RevealOnView>`
+
+Sugar over `<Parallax>`. Forwards `className` and `style` unchanged.
+
+| prop | type | default | notes |
+|------|------|---------|-------|
+| `effect` | `'fade' \| 'scale' \| 'both'` | `'fade'` | `fade` ramps opacity 0→1, `scale` grows from 0→1, `both` combines them. Eases in with `ease-out`. |
+| `threshold` | `number` | `0.3` | Trigger line — fraction of the element's pass where the reveal starts. Below it, the element is hidden. Clamped to 0–1. |
+| `span` | `number` | `0.15` | How much scroll the reveal takes after the threshold. Together: `range="cover {threshold×100}% cover {(threshold+span)×100}%"`. Smaller = snappier. |
 
 The component renders a `<div>` wrapper. The wrapper is the animated element.
 

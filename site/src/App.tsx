@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Parallax, FadeOnView, type ParallaxAxis } from "@ouvarov/scroll-parallax";
+import { Parallax, FadeOnView, RevealOnView, type ParallaxAxis, type RevealEffect } from "@ouvarov/scroll-parallax";
 
 export function App() {
   return (
@@ -12,6 +12,7 @@ export function App() {
       <Card5Pulse />
       <Card6Combined />
       <Card7FadeOnView />
+      <Card8RevealOnView />
       <ApiSection />
       <BrowserSupport />
       <Caveats />
@@ -787,6 +788,119 @@ function Card7FadeOnView() {
   );
 }
 
+/* ─────────────── Card 8: RevealOnView threshold reveal ─────────────── */
+
+const REVEAL_EFFECTS: { label: string; value: RevealEffect }[] = [
+  { label: "fade", value: "fade" },
+  { label: "scale", value: "scale" },
+  { label: "both", value: "both" },
+];
+
+function Card8RevealOnView() {
+  const [effect, setEffect] = useState<RevealEffect>("fade");
+  const [threshold, setThreshold] = useState(0.3);
+  const [span, setSpan] = useState(0.15);
+
+  const lines = [
+    effect !== "fade" ? ` effect="${effect}"` : "",
+    ` threshold={${threshold}}`,
+    span !== 0.15 ? ` span={${span}}` : "",
+  ].join("");
+  const snippet = `<RevealOnView${lines}>
+  <Card />
+</RevealOnView>`;
+
+  return (
+    <section className="demo-section">
+      <div className="container">
+        <h2><span className="num">8</span> RevealOnView — animate in at a threshold</h2>
+        <p className="lede">
+          Hidden until the element reaches a point on the way up — by default
+          the lower third (<code>threshold={"{0.3}"}</code>) — then it animates
+          in over a short scroll <code>span</code> and holds. Pick the reveal:
+          opacity, scale, or both.
+        </p>
+
+        <div className="controls-bar">
+          <div className="controls-grid">
+            <div className="control-row">
+              <label>
+                <span>effect</span>
+                <span className="value">{effect}</span>
+              </label>
+              <div className="axis-toggle">
+                {REVEAL_EFFECTS.map((e) => (
+                  <button
+                    key={e.value}
+                    type="button"
+                    className={effect === e.value ? "active" : ""}
+                    onClick={() => setEffect(e.value)}
+                  >
+                    {e.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="control-row">
+              <label>
+                <span>threshold</span>
+                <span className="value">{threshold.toFixed(2)}</span>
+              </label>
+              <input
+                type="range" min={0.1} max={0.8} step={0.05} value={threshold}
+                onChange={(e) => setThreshold(Number(e.target.value))}
+              />
+            </div>
+            <div className="control-row">
+              <label>
+                <span>span</span>
+                <span className="value">{span.toFixed(2)}</span>
+              </label>
+              <input
+                type="range" min={0.05} max={0.5} step={0.05} value={span}
+                onChange={(e) => setSpan(Number(e.target.value))}
+              />
+            </div>
+          </div>
+          <pre className="controls-snippet"><code>{snippet}</code></pre>
+        </div>
+      </div>
+
+      <div className="container scroll-row">
+        <div className="scroll-text">
+          <p>
+            Unlike <code>FadeOnView</code>, which ramps across the whole entry,
+            <code>RevealOnView</code> holds hidden until the{" "}
+            <code>threshold</code> line, then plays a short ease-out reveal and
+            holds. <code>threshold={"{0.3}"}</code> with{" "}
+            <code>span={"{0.15}"}</code> maps to{" "}
+            <code>range="cover 30% cover 45%"</code> — the card is invisible
+            below 30%, animates in across the next 15%, solid after.
+          </p>
+          <p>
+            <code>effect="fade"</code> ramps opacity <code>0 → 1</code>.{" "}
+            <code>effect="scale"</code> grows it from <code>scale 0</code> to
+            full size. <code>effect="both"</code> does both at once. Shrink{" "}
+            <code>span</code> toward <code>0.05</code> for a snappier entrance,
+            widen it for a longer one.
+          </p>
+          <p>
+            It's still a scroll-driven animation, so at normal scroll speed it
+            reads as an entrance, but scrubbing slowly tracks the scroll — and
+            it's reversible: scroll back up past the line and the card hides
+            again. A time-based one-shot would need JS, out of scope here.
+          </p>
+        </div>
+        <div className="scroll-card-col">
+          <RevealOnView effect={effect} threshold={threshold} span={span}>
+            <div className="demo-card" style={{ background: "var(--card-d)" }}>8</div>
+          </RevealOnView>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 /* ─────────────── API table ─────────────── */
 
 function ApiSection() {
@@ -937,6 +1051,44 @@ function ApiSection() {
               <td><code>string</code></td>
               <td><code>'entry'</code></td>
               <td>Where the fade plays. Defaults to the element's entry into the viewport.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3 className="api-subhead"><code>&lt;RevealOnView&gt;</code></h3>
+        <p className="lede">
+          Hidden until the element reaches a threshold on the way up, then
+          animates in over a short scroll span and holds. Sugar over{" "}
+          <code>&lt;Parallax&gt;</code>; forwards <code>className</code> and{" "}
+          <code>style</code>.
+        </p>
+        <table className="api-table">
+          <thead>
+            <tr>
+              <th>Prop</th>
+              <th>Type</th>
+              <th>Default</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>effect</code></td>
+              <td><code>'fade' | 'scale' | 'both'</code></td>
+              <td><code>'fade'</code></td>
+              <td><code>fade</code> ramps opacity 0→1, <code>scale</code> grows from 0→1, <code>both</code> combines them. Eases in with <code>ease-out</code>.</td>
+            </tr>
+            <tr>
+              <td><code>threshold</code></td>
+              <td><code>number</code></td>
+              <td><code>0.3</code></td>
+              <td>Trigger line — fraction of the element's pass where the reveal starts. Below it, the element is hidden.</td>
+            </tr>
+            <tr>
+              <td><code>span</code></td>
+              <td><code>number</code></td>
+              <td><code>0.15</code></td>
+              <td>How much scroll the reveal takes after the threshold. Together they map to <code>range="cover {"{threshold×100}"}% cover {"{(threshold+span)×100}"}%"</code>. Smaller = snappier.</td>
             </tr>
           </tbody>
         </table>
