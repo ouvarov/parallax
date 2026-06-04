@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.1] — 2026-06-04
+
+- Docs only. Corrected stale size figures in the README and the npm description — the bundle grew to four components since those numbers were last written. Actual: full bundle 2.6 KB raw / 1.1 KB gzipped JS, 6.8 KB raw / 1.5 KB gzipped CSS; tree-shakes to 313–869 B per imported component.
+- No code change — `0.7.0` and `0.7.1` are byte-identical at runtime.
+
+[0.7.1]: https://github.com/ouvarov/scroll-parallax/releases/tag/v0.7.1
+
 ## [0.7.0] — 2026-06-04
 
 - New `<ScrollProgress>` component. A fixed bar pinned to the top (or bottom) of the page that fills left-to-right as the document scrolls. Drop one tag at the root of your app — no scroll listener, no `useState`, no effect.
