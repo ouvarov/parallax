@@ -6,13 +6,13 @@
 [![license](https://img.shields.io/npm/l/@ouvarov/scroll-parallax)](LICENSE)
 [![downloads](https://img.shields.io/npm/dm/@ouvarov/scroll-parallax)](https://www.npmjs.com/package/@ouvarov/scroll-parallax)
 
-One React component for scroll-driven animation. Translate, opacity, scale, rotate — all four scroll-animatable CSS properties in one component, under 1 KB gzipped total runtime. Plus `<FadeOnView>` and `<RevealOnView>`, one-tag wrappers for the common reveal-on-scroll cases, and `<ScrollProgress>`, a page-level reading-progress bar. The animation itself is pure CSS `animation-timeline: view()` (or `scroll()` for the page bar).
+One React component for scroll-driven animation. Translate, opacity, scale, rotate — all four scroll-animatable CSS properties in one component, under 1 KB gzipped per imported component. Plus `<FadeOnView>` and `<RevealOnView>`, one-tag wrappers for the common reveal-on-scroll cases, and `<ScrollProgress>`, a page-level reading-progress bar. The animation itself is pure CSS `animation-timeline: view()` (or `scroll()` for the page bar).
 
 📺 **Live demo & docs:** https://ouvarov.github.io/scroll-parallax/
 
 ```
-JS:   2.1 KB raw  /  946 B gzipped  (all components)
-CSS:  5.4 KB raw  /  1.0 KB gzipped
+JS:   2.6 KB raw  /  1.1 KB gzipped  (all components; tree-shakes to 313–869 B per component)
+CSS:  6.8 KB raw  /  1.5 KB gzipped
 ```
 
 ## Install

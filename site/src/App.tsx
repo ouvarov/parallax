@@ -39,7 +39,7 @@ function Hero() {
         <span className="hero-tag">@ouvarov/scroll-parallax · MIT</span>
         <h1>
           Scroll parallax for React.{" "}
-          <span className="accent">Under 1 KB</span>, zero runtime.
+          <span className="accent">~1 KB</span>, zero runtime.
         </h1>
         <p className="hero-sub">
           One component for scroll-driven animation in React. Translate,
@@ -50,8 +50,8 @@ function Hero() {
         </p>
 
         <div className="size-row">
-          <span className="badge">JS: <strong>1.0 KB</strong> raw / <strong>511 B</strong> gzipped</span>
-          <span className="badge">CSS: <strong>2.6 KB</strong> raw / <strong>482 B</strong> gzipped</span>
+          <span className="badge">JS: <strong>2.6 KB</strong> raw / <strong>1.1 KB</strong> gzipped</span>
+          <span className="badge">CSS: <strong>6.8 KB</strong> raw / <strong>1.5 KB</strong> gzipped</span>
           <span className="badge">Dependencies: <strong>0</strong></span>
         </div>
 
