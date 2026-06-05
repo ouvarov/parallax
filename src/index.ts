@@ -11,3 +11,6 @@ export type { RevealOnViewProps, RevealEffect } from "./RevealOnView";
 
 export { ScrollProgress } from "./ScrollProgress";
 export type { ScrollProgressProps, ScrollProgressPosition } from "./ScrollProgress";
+
+export { StickyShrink } from "./StickyShrink";
+export type { StickyShrinkProps } from "./StickyShrink";

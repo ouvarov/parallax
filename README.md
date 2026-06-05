@@ -6,13 +6,13 @@
 [![license](https://img.shields.io/npm/l/@ouvarov/scroll-parallax)](LICENSE)
 [![downloads](https://img.shields.io/npm/dm/@ouvarov/scroll-parallax)](https://www.npmjs.com/package/@ouvarov/scroll-parallax)
 
-One React component for scroll-driven animation. Translate, opacity, scale, rotate — all four scroll-animatable CSS properties in one component, under 1 KB gzipped per imported component. Plus `<FadeOnView>` and `<RevealOnView>`, one-tag wrappers for the common reveal-on-scroll cases, and `<ScrollProgress>`, a page-level reading-progress bar. The animation itself is pure CSS `animation-timeline: view()` (or `scroll()` for the page bar).
+One React component for scroll-driven animation. Translate, opacity, scale, rotate — all four scroll-animatable CSS properties in one component, under 1 KB gzipped per imported component. Plus `<FadeOnView>` and `<RevealOnView>`, one-tag wrappers for the common reveal-on-scroll cases, `<ScrollProgress>`, a page-level reading-progress bar, and `<StickyShrink>`, a sticky header that shrinks on scroll. The animation itself is pure CSS `animation-timeline: view()` (or `scroll()` for the page-level ones).
 
 📺 **Live demo & docs:** https://ouvarov.github.io/scroll-parallax/
 
 ```
-JS:   2.6 KB raw  /  1.1 KB gzipped  (all components; tree-shakes to 313–869 B per component)
-CSS:  6.8 KB raw  /  1.5 KB gzipped
+JS:   2.9 KB raw  /  1.2 KB gzipped  (all components; tree-shakes to 268–869 B per component)
+CSS:  8.3 KB raw  /  1.9 KB gzipped
 ```
 
 ## Install
@@ -169,6 +169,34 @@ import { ScrollProgress } from "@ouvarov/scroll-parallax";
 
 The fill is a composite-only `scaleX`, so the bar rides the compositor and never lays out or paints while you scroll. It stays active under `prefers-reduced-motion` — it mirrors the native scrollbar rather than adding decorative motion.
 
+### StickyShrink — header that shrinks on scroll
+
+A `position: sticky` header that shrinks from a tall variant to a compact one over the first `distance` px of page scroll. No scroll listener, no `useScroll`.
+
+```tsx
+import { StickyShrink } from "@ouvarov/scroll-parallax";
+
+<StickyShrink>                              {/* 80px → 56px over 200px of scroll */}
+  <Logo />
+  <Nav />
+</StickyShrink>
+
+<StickyShrink from={120} to={64} distance={300}>
+  <Header />
+</StickyShrink>
+```
+
+It's driven by a single registered progress variable, `--ouvarov-sticky-progress` (`0 → 1`), animated on `animation-timeline: scroll(root block)`. Children **inherit** it, so they can react to the same scroll without any extra wiring:
+
+```tsx
+<StickyShrink>
+  {/* logo scales down as the header collapses */}
+  <img style={{ scale: "calc(1 - 0.25 * var(--ouvarov-sticky-progress))" }} />
+</StickyShrink>
+```
+
+Unlike the parallax components, shrinking a header reflows the page below it, so this one **does touch layout** — bounded to one element and its subtree, only while scrolling the first `distance` px. Under `prefers-reduced-motion` it stays at its tall size and never shrinks.
+
 ## Props
 
 ### `<Parallax>`
@@ -225,6 +253,19 @@ Standalone page-level bar — renders its own fixed `<div>`, takes no children.
 | `zIndex` | `number` | `2147483647` | Stacking order — defaults high so it sits above page chrome. |
 | `className` | `string` | — | Merged onto the bar. |
 | `style` | `CSSProperties` | — | Merged onto the bar. |
+
+### `<StickyShrink>`
+
+A `position: sticky` header. Exposes `--ouvarov-sticky-progress` (`0 → 1`) to its subtree.
+
+| prop | type | default | notes |
+|------|------|---------|-------|
+| `from` | `number \| string` | `80` | Tall height before scroll. Number → px; string used as-is. |
+| `to` | `number \| string` | `56` | Compact height after shrinking. Number → px; string used as-is. |
+| `distance` | `number \| string` | `200` | Scroll distance from the top over which it shrinks. Number → px. |
+| `className` | `string` | — | Merged onto the header. |
+| `style` | `CSSProperties` | — | Merged onto the header. |
+| `children` | `ReactNode` | — | Header content. Read `var(--ouvarov-sticky-progress)` to react to the shrink. |
 
 The component renders a `<div>` wrapper. The wrapper is the animated element.
 

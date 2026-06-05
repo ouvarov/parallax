@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Parallax, FadeOnView, RevealOnView, ScrollProgress, type ParallaxAxis, type RevealEffect, type ScrollProgressPosition } from "@ouvarov/scroll-parallax";
+import { Parallax, FadeOnView, RevealOnView, ScrollProgress, StickyShrink, type ParallaxAxis, type RevealEffect, type ScrollProgressPosition } from "@ouvarov/scroll-parallax";
 
 export function App() {
   const [spHeight, setSpHeight] = useState(5);
@@ -24,6 +24,7 @@ export function App() {
         color={spColor} setColor={setSpColor}
         position={spPosition} setPosition={setSpPosition}
       />
+      <Card11StickyShrink />
       <ApiSection />
       <BrowserSupport />
       <Caveats />
@@ -50,8 +51,8 @@ function Hero() {
         </p>
 
         <div className="size-row">
-          <span className="badge">JS: <strong>2.6 KB</strong> raw / <strong>1.1 KB</strong> gzipped</span>
-          <span className="badge">CSS: <strong>6.8 KB</strong> raw / <strong>1.5 KB</strong> gzipped</span>
+          <span className="badge">JS: <strong>2.9 KB</strong> raw / <strong>1.2 KB</strong> gzipped</span>
+          <span className="badge">CSS: <strong>8.3 KB</strong> raw / <strong>1.9 KB</strong> gzipped</span>
           <span className="badge">Dependencies: <strong>0</strong></span>
         </div>
 
@@ -1124,6 +1125,108 @@ function Card10ScrollProgress({
             style={{ background: color, color: "#0b0b0f", display: "grid", placeItems: "center", textAlign: "center", padding: "1rem" }}
           >
             look up ↑<br />that bar is me
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─────────────── Card 11: StickyShrink ─────────────── */
+
+function Card11StickyShrink() {
+  const [from, setFrom] = useState(88);
+  const [to, setTo] = useState(48);
+  const [distance, setDistance] = useState(180);
+
+  const snippet = `<StickyShrink from={${from}} to={${to}} distance={${distance}}>
+  <img style={{ scale:
+    "calc(1 - 0.4 * var(--ouvarov-sticky-progress))" }} />
+  <strong>scroll-parallax</strong>
+</StickyShrink>`;
+
+  return (
+    <section className="demo-section">
+      <div className="container">
+        <h2><span className="num">11</span> StickyShrink — header that shrinks on scroll</h2>
+        <p className="lede">
+          A <code>position: sticky</code> header that shrinks from a tall
+          variant to a compact one over the first <code>distance</code> px of
+          scroll. No scroll listener, no <code>useScroll</code>. Scroll{" "}
+          <em>inside the box below</em> to see it collapse.
+        </p>
+
+        <div className="controls-bar">
+          <div className="controls-grid">
+            <div className="control-row">
+              <label>
+                <span>from (tall)</span>
+                <span className="value">{from}px</span>
+              </label>
+              <input
+                type="range" min={56} max={140} value={from}
+                onChange={(e) => setFrom(Number(e.target.value))}
+              />
+            </div>
+            <div className="control-row">
+              <label>
+                <span>to (compact)</span>
+                <span className="value">{to}px</span>
+              </label>
+              <input
+                type="range" min={32} max={72} value={to}
+                onChange={(e) => setTo(Number(e.target.value))}
+              />
+            </div>
+            <div className="control-row">
+              <label>
+                <span>distance</span>
+                <span className="value">{distance}px</span>
+              </label>
+              <input
+                type="range" min={80} max={360} value={distance}
+                onChange={(e) => setDistance(Number(e.target.value))}
+              />
+            </div>
+          </div>
+          <pre className="controls-snippet"><code>{snippet}</code></pre>
+        </div>
+      </div>
+
+      <div className="container scroll-row">
+        <div className="scroll-text">
+          <p>
+            One registered progress variable —{" "}
+            <code>--ouvarov-sticky-progress</code> (<code>0 → 1</code>) — is
+            animated on <code>animation-timeline: scroll()</code>, and the
+            header height is derived from it. The page below reflows as it
+            shrinks; that's the one place this library touches layout, and it's
+            bounded to the header alone.
+          </p>
+          <p>
+            Children <strong>inherit</strong> that variable, so they react with
+            zero extra wiring. Here the logo scales with{" "}
+            <code>scale: calc(1 - 0.4 * var(--ouvarov-sticky-progress))</code>{" "}
+            and the tag fades with <code>opacity: calc(1 - …)</code> — no props
+            passed, no JS.
+          </p>
+          <p>
+            Under <code>prefers-reduced-motion</code> it stays at its tall size
+            and never shrinks.
+          </p>
+        </div>
+        <div className="scroll-card-col">
+          <div className="sticky-demo-scroller">
+            <StickyShrink className="sticky-demo-header" from={from} to={to} distance={distance}>
+              <div className="sticky-demo-logo" />
+              <strong>scroll-parallax</strong>
+              <span className="sticky-demo-tag">v0.8.0</span>
+            </StickyShrink>
+            <div className="sticky-demo-filler">
+              {Array.from({ length: 10 }).map((_, i) => (
+                <div key={i} />
+              ))}
+            </div>
           </div>
         </div>
       </div>

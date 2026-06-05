@@ -200,3 +200,47 @@
 /* The bar mirrors the native scrollbar position rather than adding decorative
    motion, so it stays active under reduced-motion — disabling it would hide
    the only thing the component does. */
+
+/* StickyShrink: a position:sticky header that shrinks from `from` to `to` over
+   the first `distance` px of page scroll. Driven by a single registered
+   progress var animated on scroll(root block); the height is derived from it,
+   and children inherit --ouvarov-sticky-progress so they can react too (e.g.
+   scale a logo). Shrinking a header reflows the page below it, so unlike the
+   compositor-only parallax animations this one DOES touch layout — bounded to
+   one element + its subtree, only while scrolling the first `distance` px. */
+@property --ouvarov-sticky-progress {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+@keyframes ouvarov-sticky-shrink {
+  from { --ouvarov-sticky-progress: 0; }
+  to   { --ouvarov-sticky-progress: 1; }
+}
+
+.ouvarov-sticky-shrink {
+  position: sticky;
+  top: 0;
+  height: calc(
+    var(--ouvarov-sticky-from, 80px) +
+    (var(--ouvarov-sticky-to, 56px) - var(--ouvarov-sticky-from, 80px)) *
+    var(--ouvarov-sticky-progress)
+  );
+  animation-name: ouvarov-sticky-shrink;
+  animation-timing-function: linear;
+  animation-fill-mode: both;
+  animation-timeline: scroll(root block);
+  animation-range: 0 var(--ouvarov-sticky-distance, 200px);
+}
+
+@supports (animation-timeline: scroll()) {
+  .ouvarov-sticky-shrink { animation-duration: 1ms; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ouvarov-sticky-shrink {
+    animation: none !important;
+    --ouvarov-sticky-progress: 0 !important; /* stays tall, no shrink */
+  }
+}

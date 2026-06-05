@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.8.0] — 2026-06-05
+
+- New `<StickyShrink>` component. A `position: sticky` header that shrinks from a tall variant (`from`, default 80px) to a compact one (`to`, default 56px) over the first `distance` px of page scroll (default 200). No scroll listener, no `useScroll`.
+- Driven by a single registered progress variable, `--ouvarov-sticky-progress` (`0 → 1`), animated on `animation-timeline: scroll(root block)`; the height is derived from it via `calc`.
+- Children **inherit** `--ouvarov-sticky-progress`, so they can react to the same scroll with zero extra wiring — e.g. `scale: calc(1 - 0.25 * var(--ouvarov-sticky-progress))` to shrink a logo alongside the header.
+- Honest tradeoff: shrinking a header reflows the page below it, so unlike the parallax components this one touches layout. The cost is bounded — one element and its subtree, only while scrolling the first `distance` px. Stays tall (no shrink) under `prefers-reduced-motion`.
+- Props: `from`, `to`, `distance`. ~270 bytes gzipped tree-shaken.
+
+[0.8.0]: https://github.com/ouvarov/scroll-parallax/releases/tag/v0.8.0
+
 ## [0.7.1] — 2026-06-04
 
 - Docs only. Corrected stale size figures in the README and the npm description — the bundle grew to four components since those numbers were last written. Actual: full bundle 2.6 KB raw / 1.1 KB gzipped JS, 6.8 KB raw / 1.5 KB gzipped CSS; tree-shakes to 313–869 B per imported component.
