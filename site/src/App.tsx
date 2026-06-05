@@ -1124,7 +1124,7 @@ function Card10ScrollProgress({
             className="demo-card"
             style={{ background: color, color: "#0b0b0f", display: "grid", placeItems: "center", textAlign: "center", padding: "1rem" }}
           >
-            look up ↑<br />that bar is me
+            {position === "bottom" ? <>look down ↓<br />that bar is me</> : <>look up ↑<br />that bar is me</>}
           </div>
         </div>
       </div>
