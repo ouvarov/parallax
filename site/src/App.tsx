@@ -1023,7 +1023,7 @@ function Card9Stagger() {
               <div
                 key={i}
                 className="demo-card"
-                style={{ background: bg, width: "auto", aspectRatio: "1", minHeight: 0 }}
+                style={{ background: bg, width: "auto", height: "auto", aspectRatio: "1", minHeight: 0 }}
               >
                 {i + 1}
               </div>

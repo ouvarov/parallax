@@ -309,12 +309,13 @@ pre code {
   margin: 0 0 0.6rem;
   letter-spacing: -0.01em;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 0.75rem;
 }
 .demo-section h2 .num {
   display: inline-grid;
   place-items: center;
+  flex: 0 0 auto;
   width: 2.2rem;
   height: 2.2rem;
   border-radius: 50%;
@@ -378,6 +379,7 @@ pre code {
 
 .scroll-text {
   padding: 4rem 0;
+  min-width: 0;
 }
 .scroll-text p {
   color: var(--muted);
@@ -396,6 +398,7 @@ pre code {
   display: grid;
   place-items: center;
   padding: 4rem 0;
+  min-width: 0;
 }
 
 .demo-card {
@@ -507,6 +510,54 @@ pre code {
 .browser-table .status-ok    { color: #aef0bf; }
 .browser-table .status-warn  { color: #ffd166; }
 .browser-table .status-bad   { color: #ffb29c; }
+
+/* Tables -> stacked cards on narrow screens. Column order is fixed,
+   so cell labels are injected by position instead of per-cell markup. */
+@media (max-width: 600px) {
+  .api-table, .api-table tbody, .api-table tr, .api-table td,
+  .browser-table, .browser-table tbody, .browser-table tr, .browser-table td {
+    display: block;
+    width: 100%;
+  }
+  .api-table thead,
+  .browser-table thead { display: none; }
+
+  .api-table tr,
+  .browser-table tr {
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .api-table td,
+  .browser-table td {
+    border: none;
+    padding: 0.1rem 0;
+    overflow-wrap: anywhere;
+  }
+  .api-table td:first-child,
+  .browser-table td:first-child {
+    margin-bottom: 0.4rem;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+  .api-table td:not(:first-child)::before,
+  .browser-table td:not(:first-child)::before {
+    display: block;
+    color: var(--muted);
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 0.5rem;
+    margin-bottom: 0.1rem;
+  }
+  /* <Parallax> tables: Prop / Type / Default / Notes */
+  .api-table td:nth-child(2)::before { content: "Type"; }
+  .api-table td:nth-child(3)::before { content: "Default"; }
+  .api-table td:nth-child(4)::before { content: "Notes"; }
+  /* Browser support: Browser / Status / Notes */
+  .browser-table td:nth-child(2)::before { content: "Status"; }
+  .browser-table td:nth-child(3)::before { content: "Notes"; }
+}
 
 /* ============ Caveats ============ */
 .caveats {
