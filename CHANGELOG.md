@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.8.1] — 2026-06-09
+
+- Docs only. New **"Use without React"** section: the stylesheet is framework-neutral, so the classes (`.ouvarov-parallax`, `.ouvarov-scroll-progress`, `.ouvarov-sticky-shrink`) and `--ouvarov-*` custom properties work in Vue, Svelte, Astro or plain HTML — import `@ouvarov/scroll-parallax/style.css` (or pull it from a CDN) and skip the React layer entirely.
+- Renamed "Caveats" to "Scope" and dropped the stale Next.js Pages Router note: importing CSS from `node_modules` is permitted anywhere in the Pages Router (Next.js ≥ 9.5.4), so the auto-import does not throw.
+- No code change — `0.8.0` and `0.8.1` are byte-identical at runtime.
+
+[0.8.1]: https://github.com/ouvarov/scroll-parallax/releases/tag/v0.8.1
+
 ## [0.8.0] — 2026-06-05
 
 - New `<StickyShrink>` component. A `position: sticky` header that shrinks from a tall variant (`from`, default 80px) to a compact one (`to`, default 56px) over the first `distance` px of page scroll (default 200). No scroll listener, no `useScroll`.

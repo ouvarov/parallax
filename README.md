@@ -287,11 +287,58 @@ Reduced motion is respected automatically via `@media (prefers-reduced-motion: r
 
 `animation-timeline: view()` has been stable in Chromium since 2023 and Safari since 2024 — the browser reads scroll progress natively, no JavaScript needed. This package is a typed React wrapper over that native CSS API.
 
-## Caveats
+## Use without React
 
-- **Single-purpose.** Translate, opacity, scale and rotate on scroll, nothing else. No spring physics, no gesture handling, no layout animations.
-- The `<Parallax>` wrapper adds one DOM node. If that matters, copy the CSS from the source and apply it to your own element.
-- **Next.js Pages Router** disallows global CSS imports from non-`_app.tsx` files, so the auto-import will throw at build. Workaround: import `@ouvarov/scroll-parallax/style.css` from `_app.tsx` instead and don't import `Parallax` outside it. App Router has no restriction.
+The React components do one thing: render an element with a class and a few
+CSS custom properties. All the animation lives in `style.css`. So you don't
+actually need React — import the stylesheet, add the class, set the properties.
+The same classes work in Vue, Svelte, Astro, or plain HTML.
+
+Via a bundler:
+
+```js
+import "@ouvarov/scroll-parallax/style.css";
+```
+
+Or in plain HTML, straight from a CDN:
+
+```html
+<link rel="stylesheet" href="https://unpkg.com/@ouvarov/scroll-parallax/style.css">
+```
+
+Then use the classes directly — no build step, no JavaScript:
+
+```html
+<!-- drifts +60px → -60px as it crosses the viewport -->
+<div class="ouvarov-parallax" style="--ouvarov-parallax-from: 60px; --ouvarov-parallax-to: -60px">
+  <img src="/hero.jpg" alt="">
+</div>
+
+<!-- bare class uses the defaults (+30px → -30px) -->
+<div class="ouvarov-parallax"><img src="/hero.jpg" alt=""></div>
+
+<!-- horizontal drift -->
+<div class="ouvarov-parallax" data-axis="x">…</div>
+
+<!-- page reading bar, pinned to the top -->
+<div class="ouvarov-scroll-progress" data-position="top"></div>
+
+<!-- sticky header that shrinks 80px → 56px over 200px of scroll -->
+<header class="ouvarov-sticky-shrink">…</header>
+```
+
+These are the same class names and `--ouvarov-*` custom properties the React
+components emit — read [`style.css`](style.css) for the full set. The React
+layer is just typed sugar that sets them for you.
+
+## Scope
+
+One thing, done well: translate, opacity, scale and rotate on scroll. No spring
+physics, no gesture handling, no layout animations — by design.
+
+- The `<Parallax>` wrapper adds one DOM node. Don't want it? Skip the component
+  and apply the `.ouvarov-parallax` class with the custom properties directly —
+  the animation is pure CSS, no React required (see [Use without React](#use-without-react)).
 
 ## License
 
